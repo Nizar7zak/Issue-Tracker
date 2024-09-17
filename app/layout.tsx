@@ -1,10 +1,10 @@
+import { Container, Theme } from '@radix-ui/themes';
 import '@radix-ui/themes/styles.css';
-import './theme-config.css'
-import './globals.css'
-import { Theme } from '@radix-ui/themes';
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import NabBar from './NabBar'
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
+import NabBar from './NabBar';
+import './theme-config.css';
 
 const inter = Inter( {
   subsets: [ 'latin' ],
@@ -27,7 +27,9 @@ export default function RootLayout( {
         <Theme accentColor="violet">
           <NabBar />
           <main className='px-5'>
-            { children }
+            <Container>
+              { children }
+            </Container>
           </main>
         </Theme>
       </body>
