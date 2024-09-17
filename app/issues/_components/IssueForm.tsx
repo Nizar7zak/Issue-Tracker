@@ -3,8 +3,8 @@
 import { ErrorMessage, Spinner } from "@/app/components";
 import { issueSchema } from "@/app/validationSchemas";
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Issue } from "@prisma/client";
-import { Button, Callout, TextField } from "@radix-ui/themes";
+import { Issue, STATUS } from "@prisma/client";
+import { Box, Button, Callout, Select, TextField } from "@radix-ui/themes";
 import axios from "axios";
 import "easymde/dist/easymde.min.css";
 import dynamic from "next/dynamic";
@@ -23,8 +23,14 @@ const IssueForm = ( { issue }: { issue?: Issue } ) => {
         register,
         control,
         handleSubmit,
+        setValue,
         formState: { errors }
-    } = useForm<IssueFormData>( { resolver: zodResolver( issueSchema ) } )
+    } = useForm<IssueFormData>( {
+        resolver: zodResolver( issueSchema ),
+        defaultValues: {
+            status: issue?.status || "OPEN"
+        }
+    } )
 
     const router = useRouter()
     const [ error, setError ] = useState( "" )
@@ -33,7 +39,12 @@ const IssueForm = ( { issue }: { issue?: Issue } ) => {
     const onSubmit = handleSubmit( async ( data ) => {
         try {
             setIsSubmitting( true )
-            await axios.post( '/api/issues', data )
+            if ( issue ) {
+                await axios.patch( `/api/issues/${issue.id}`, data )
+                router.push( '/issues' )
+            }
+            else
+                await axios.post( '/api/issues', data )
             router.push( '/issues' )
         } catch ( error ) {
             setIsSubmitting( false )
@@ -54,6 +65,7 @@ const IssueForm = ( { issue }: { issue?: Issue } ) => {
                 onSubmit={ onSubmit } >
                 <TextField.Root defaultValue={ issue?.title } placeholder="Title" { ...register( "title" ) } />
                 <ErrorMessage>{ errors.title?.message }</ErrorMessage>
+
                 <Controller
                     name="description"
                     defaultValue={ issue?.description }
@@ -61,8 +73,29 @@ const IssueForm = ( { issue }: { issue?: Issue } ) => {
                     render={ ( { field } ) => <SimpleMDE placeholder="Description" { ...field } /> }
                 />
                 <ErrorMessage>{ errors.description?.message }</ErrorMessage>
+
+                { issue &&
+                    <Box display='block'>
+
+                        <Select.Root
+                            defaultValue={ issue.status }
+                            onValueChange={ ( value: STATUS ) => setValue( 'status', value ) }
+                        >
+                            <Select.Trigger />
+                            <Select.Content>
+                                <Select.Group>
+                                    <Select.Label>Issue Status</Select.Label>
+                                    <Select.Item value="OPEN">Open</Select.Item>
+                                    <Select.Item value="CLOSED">Closed</Select.Item>
+                                    <Select.Item value="IN_PROGRESS">In Progress</Select.Item>
+                                </Select.Group>
+                            </Select.Content>
+                        </Select.Root>
+                    </Box>
+                }
+
                 <Button disabled={ isSubmitting }>
-                    Submit New Issue{ isSubmitting && <Spinner /> }
+                    { issue ? 'Update Issue' : 'Submit New Issue' }{ " " }{ isSubmitting && <Spinner /> }
                 </Button>
             </form>
         </div>

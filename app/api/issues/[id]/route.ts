@@ -18,7 +18,6 @@ export const PATCH = async (
             id: parseInt( id )
         }
     } )
-    console.log(issue)
 
     if ( !issue )
         return NextResponse.json( { error: 'Invalid Issue ' }, { status: 400 } )
