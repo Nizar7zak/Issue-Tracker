@@ -1,10 +1,11 @@
 "use client"
+import { Skeleton } from '@/app/components';
 import { Avatar, Box, Container, DropdownMenu, Flex, Text } from "@radix-ui/themes";
 import classNames from "classnames";
-import Link from "next/link"
+import { useSession } from 'next-auth/react';
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaBug } from "react-icons/fa";
-import { useSession } from 'next-auth/react'
 
 const NabBar = () => {
 
@@ -54,6 +55,7 @@ const NavLinks = () => {
 const AuthStatus = () => {
     const { status, data: session } = useSession()
     return <Box>
+        { status === "loading" && <Skeleton width='3rem' /> }
         {
             status === "authenticated" &&
             <DropdownMenu.Root>
