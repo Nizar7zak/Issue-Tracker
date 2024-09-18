@@ -1,5 +1,5 @@
 "use client"
-import { Box } from "@radix-ui/themes";
+import { Box, Container, Flex } from "@radix-ui/themes";
 import classNames from "classnames";
 import Link from "next/link"
 import { usePathname } from "next/navigation";
@@ -15,30 +15,36 @@ const NabBar = () => {
     ]
 
     return (
-        <nav className="flex space-x-6 px-5 h-14 items-center border-b mb-5">
-            <Link href='/'>
-                <FaBug />
-            </Link>
-            <ul className="flex space-x-6">
-                { links.map( ( link ) => <li key={ link.href }>
-                    <Link
-                        href={ link.href }
-                        className={
-                            classNames( {
-                                "text-zinc-900": link.href === pathName,
-                                "text-zinc-500": link.href !== pathName,
-                                "hover:text-zinc-800 transition-colors": true,
-                            } )
-                        }>
-                        { link.label }
-                    </Link>
-                </li>
-                ) }
-            </ul>
-            <Box>
-                { status === "unauthenticated" && <Link href='/api/auth/signin'>Login</Link> }
-                { status === "authenticated" && <Link href='/api/auth/signout'>Logout</Link> }
-            </Box>
+        <nav className="px-5 border-b py-3 mb-5">
+            <Container>
+                <Flex justify="between">
+                    <Flex gap="3" align="center">
+                        <Link href='/'>
+                            <FaBug />
+                        </Link>
+                        <ul className="flex space-x-6">
+                            { links.map( ( link ) => <li key={ link.href }>
+                                <Link
+                                    href={ link.href }
+                                    className={
+                                        classNames( {
+                                            "text-zinc-900": link.href === pathName,
+                                            "text-zinc-500": link.href !== pathName,
+                                            "hover:text-zinc-800 transition-colors": true,
+                                        } )
+                                    }>
+                                    { link.label }
+                                </Link>
+                            </li>
+                            ) }
+                        </ul></Flex>
+                    <Box>
+                        { status === "unauthenticated" && <Link href='/api/auth/signin'>Login</Link> }
+                        { status === "authenticated" && <Link href='/api/auth/signout'>Logout</Link> }
+                    </Box>
+                </Flex>
+            </Container>
+
         </nav>
     )
 }
