@@ -4,6 +4,7 @@ import { Issue, User } from '@prisma/client'
 import { Select } from '@radix-ui/themes'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
+import toast, { Toaster } from 'react-hot-toast'
 
 const AssigneeSelect = ( { issue }: { issue: Issue } ) => {
     const { data: users, error, isLoading } = useQuery( {
@@ -17,36 +18,43 @@ const AssigneeSelect = ( { issue }: { issue: Issue } ) => {
     if ( error ) return null;
 
     const assignToUser = async ( userId: string | null ) => {
-        if ( userId === "Unassigned" )
-            userId = null
-        await axios.patch(
-            `/api/issues/${issue.id}`,
-            { assignedToUserId: userId }
-        )
+        try {
+            if ( userId === "Unassigned" )
+                userId = null
+            await axios.patch(
+                `/api/issues/${issue.id}`,
+                { assignedToUserId: userId }
+            )
+        } catch ( error ) {
+            toast.error( 'Changes could not be saved.' )
+        }
     }
     return (
-        <Select.Root
-            defaultValue={ issue.assignedToUserId || "Unassigned" }
-            onValueChange={ ( value ) => assignToUser( value ) }
-        >
-            <Select.Trigger />
-            <Select.Content>
-                <Select.Group>
-                    <Select.Label>
-                        Suggestions
-                    </Select.Label>
-                    <Select.Item value="Unassigned">
-                        Unassigned
-                    </Select.Item>
-                    { users?.map( ( user ) => <Select.Item
-                        key={ user.id }
-                        value={ user.id }
-                    >
-                        { user.name }
-                    </Select.Item> ) }
-                </Select.Group>
-            </Select.Content>
-        </Select.Root>
+        <>
+            <Select.Root
+                defaultValue={ issue.assignedToUserId || "Unassigned" }
+                onValueChange={ ( value ) => assignToUser( value ) }
+            >
+                <Select.Trigger />
+                <Select.Content>
+                    <Select.Group>
+                        <Select.Label>
+                            Suggestions
+                        </Select.Label>
+                        <Select.Item value="Unassigned">
+                            Unassigned
+                        </Select.Item>
+                        { users?.map( ( user ) => <Select.Item
+                            key={ user.id }
+                            value={ user.id }
+                        >
+                            { user.name }
+                        </Select.Item> ) }
+                    </Select.Group>
+                </Select.Content>
+            </Select.Root>
+            <Toaster />
+        </>
     )
 }
 
