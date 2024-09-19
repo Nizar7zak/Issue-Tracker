@@ -1,10 +1,11 @@
 "use client"
 import { Issue, STATUS } from '@prisma/client'
 import { Select } from '@radix-ui/themes'
+import { useRouter } from 'next/navigation'
 
 interface Props {
     issue?: Issue,
-    setStatus: ( status: STATUS ) => void,
+    setStatus?: ( status: STATUS ) => void,
 }
 
 const statuses: { label: string, value: STATUS }[] = [
@@ -14,11 +15,22 @@ const statuses: { label: string, value: STATUS }[] = [
 ]
 
 const IssueStatusSelector = ( { issue, setStatus }: Props ) => {
+    const router = useRouter()
+
+    const handleSelectChange = ( status: STATUS | "ALL" | "" ) => {
+        if ( status === "ALL" )
+            status = ""
+        const query = status ? `?status=${status}` : '';
+        router.push( `/issues/list${query}` )
+    }
+
 
     return (
         <Select.Root
             defaultValue={ issue ? issue.status : "ALL" }
-            onValueChange={ ( value: STATUS ) => setStatus( value ) }
+            onValueChange={ setStatus ?
+                ( value: STATUS ) => setStatus( value ) :
+                ( value: STATUS | "ALL" ) => handleSelectChange( value ) }
         >
             <Select.Trigger />
             <Select.Content >
