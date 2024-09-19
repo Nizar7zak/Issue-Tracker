@@ -22,14 +22,11 @@ const IssueStatusSelector = ( { issue, setStatus }: Props ) => {
         if ( status === "ALL" )
             status = ""
 
-        const params = new URLSearchParams()
-        if ( status )
-            params.append( 'status', status )
-        if ( searchParams.get( 'orderBy' ) )
-            params.append( 'orderBy', searchParams.get( 'orderBy' )! )
+        const params = new URLSearchParams( searchParams )
+        params.set( 'status', status )
 
         const query = params.size ? '?' + params.toString() : ''
-        router.push( `/issues/list${query}` )
+        router.push( query )
     }
 
     return (
