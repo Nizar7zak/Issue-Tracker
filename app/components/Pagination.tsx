@@ -27,7 +27,7 @@ const Pagination = ( { itemCount, pageSize, currentPage }: Props ) => {
     const pageCount = Math.ceil( itemCount / pageSize );
     if ( pageCount <= 1 ) return null;
     return (
-        <Flex align="center" gap='2'>
+        <Flex align="center" gap='2' >
             <Button
                 color="gray"
                 variant="soft"
@@ -51,7 +51,7 @@ const Pagination = ( { itemCount, pageSize, currentPage }: Props ) => {
                 color="gray"
                 variant="soft"
                 disabled={ currentPage === pageCount }
-                onClick={ () => changePage( pageCount + 1 ) }
+                onClick={ () => changePage( currentPage + 1 ) }
             >
                 <ChevronRightIcon />
             </Button>
