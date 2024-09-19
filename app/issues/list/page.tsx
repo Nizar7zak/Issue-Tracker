@@ -2,13 +2,26 @@ import { IssueStatusBadge, Link } from "@/app/components"
 import { prisma } from "@/prisma/client"
 import { Table } from "@radix-ui/themes"
 import IssueActions from "./IssueActions"
-import { STATUS } from "@prisma/client"
+import { Issue, STATUS } from "@prisma/client"
+import NextLink from 'next/link'
+import { ArrowUpIcon } from "@radix-ui/react-icons"
 
 interface Props {
-    searchParams: { status: STATUS }
+    searchParams: { status: STATUS, orderBy: keyof Issue }
 }
 
 const IssuesPage = async ( { searchParams }: Props ) => {
+
+    const columns: {
+        label: string;
+        value: keyof Issue;
+        className?: string;
+    }[] = [
+            { label: 'Issue', value: 'title' },
+            { label: 'Status', value: "status", className: "hidden md:table-cell" },
+            { label: 'Created At', value: "assignedToUserId", className: "hidden md:table-cell" },
+        ]
+
     const statuses = Object.values( STATUS )
     const status = statuses.includes( searchParams.status ) ?
         searchParams.status :
@@ -17,7 +30,8 @@ const IssuesPage = async ( { searchParams }: Props ) => {
     const issues = await prisma.issue.findMany( {
         where: {
             status
-        }
+        },
+        orderBy: searchParams.orderBy ? { [ searchParams.orderBy ]: "asc" } : undefined
     } )
 
     return (
@@ -26,9 +40,16 @@ const IssuesPage = async ( { searchParams }: Props ) => {
             <Table.Root variant="surface">
                 <Table.Header>
                     <Table.Row>
-                        <Table.ColumnHeaderCell>Issue</Table.ColumnHeaderCell>
-                        <Table.ColumnHeaderCell className="hidden md:table-cell">Status</Table.ColumnHeaderCell>
-                        <Table.ColumnHeaderCell className="hidden md:table-cell">Created At</Table.ColumnHeaderCell>
+                        { columns.map( ( col ) => <Table.ColumnHeaderCell
+                            key={ col.value }
+                            className={ col.className }
+                        >
+                            <NextLink href={ { query: { ...searchParams, orderBy: col.value } } }>
+                                { col.label }
+                            </NextLink>
+                            { col.value === searchParams.orderBy && <ArrowUpIcon className="inline" /> }
+
+                        </Table.ColumnHeaderCell> ) }
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
