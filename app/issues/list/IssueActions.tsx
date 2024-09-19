@@ -1,4 +1,4 @@
-import IssueStatusSelector from '@/app/components/IssueStatusSelector'
+import IssueStatusSelector from '@/app/issues/_components/IssueStatusSelector'
 import { Button, Flex } from '@radix-ui/themes'
 import Link from 'next/link'
 

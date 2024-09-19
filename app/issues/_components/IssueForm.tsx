@@ -1,7 +1,7 @@
 "use client"
 
 import { ErrorMessage, Spinner } from "@/app/components";
-import IssueStatusSelector from "@/app/components/IssueStatusSelector";
+import IssueStatusSelector from "@/app/issues/_components/IssueStatusSelector";
 import { issueSchema } from "@/app/validationSchemas";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Issue, STATUS } from "@prisma/client";
