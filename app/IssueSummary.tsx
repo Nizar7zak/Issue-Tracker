@@ -3,13 +3,17 @@ import { Card, Flex, Text } from "@radix-ui/themes"
 import { IssueStatusBadge } from "./components"
 import Link from "next/link"
 
-interface Props {
+interface IssuesCount {
     open: number,
     closed: number,
     inProgress: number
 }
 
-const IssueSummary = ( { open, closed, inProgress }: Props ) => {
+interface Props {
+    issuesCount: IssuesCount
+}
+
+const IssueSummary = ( { issuesCount: { open, closed, inProgress } }: Props ) => {
 
     const containers: {
         value: number, status: STATUS
