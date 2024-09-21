@@ -38,7 +38,6 @@ export const metadata: Metadata = {
   title: "Issue Tracker - Dashboard",
   description: "View a summary of project issuse",
   keywords: "issue tracker, dashboard, project management, bug tracking, task summary",
-  viewport: "width=device-width, initial-scale=1",
   openGraph: {
     title: "Issue Tracker - Dashboard",
     description: "View a summary of project issues",

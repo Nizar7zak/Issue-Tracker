@@ -65,7 +65,6 @@ export const generateMetadata = async ( { params }: Props ) => {
             title: issue?.title,
             description: issue?.description,
         },
-        viewport: 'width=device-width, initial-scale=1'
     }
 }
 
