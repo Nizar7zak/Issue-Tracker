@@ -1,14 +1,18 @@
+import authOptions from "@/app/api/auth/[...nextauth]/authOptions"
 import { prisma } from "@/prisma/client"
 import { Box, Flex, Grid } from "@radix-ui/themes"
+import { getServerSession } from "next-auth"
 import { notFound } from "next/navigation"
+import AssigneeSelect from "./AssigneeSelect"
+import DeleteIssueButton from "./DeleteIssueButton"
 import EditIssueButton from "./EditIssueButton"
 import IssueDetails from "./IssueDetails"
-import DeleteIssueButton from "./DeleteIssueButton"
-import { getServerSession } from "next-auth"
-import authOptions from "@/app/api/auth/[...nextauth]/authOptions"
-import AssigneeSelect from "./AssigneeSelect"
 
-const IssueDetailsPage = async ( { params: { id } }: { params: { id: string } } ) => {
+interface Props {
+    params: { id: string }
+}
+
+const IssueDetailsPage = async ( { params: { id } }: Props ) => {
 
     const session = await getServerSession( authOptions )
 
@@ -36,9 +40,33 @@ const IssueDetailsPage = async ( { params: { id } }: { params: { id: string } } 
                     </Flex>
                 </Box>
             }
-
         </Grid>
     )
+}
+
+export const generateMetadata = async ( { params }: Props ) => {
+    const issue = await prisma.issue.findUnique( {
+        where: {
+            id: parseInt( params.id )
+        }
+    } )
+
+    return {
+        title: issue?.title,
+        description: 'Details of issue' + issue?.description,
+        keywords: issue?.title.split( ' ' ).concat( [ 'issue', 'bug tracking', 'project management' ] ).join( ', ' ),
+        openGraph: {
+            title: issue?.title,
+            description: issue?.description,
+            type: 'article',
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: issue?.title,
+            description: issue?.description,
+        },
+        viewport: 'width=device-width, initial-scale=1'
+    }
 }
 
 export default IssueDetailsPage
