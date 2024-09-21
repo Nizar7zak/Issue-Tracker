@@ -24,7 +24,7 @@ To run the project locally:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/issue-tracker.git
+   git clone https://github.com/Nizar7zak/Issue-Tracker.git
 
 2. Navigate to the project directory:
     cd issue-tracker
