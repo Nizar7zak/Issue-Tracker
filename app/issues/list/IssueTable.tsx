@@ -1,7 +1,7 @@
 import { IssueStatusBadge, Link } from '@/app/components';
 import { Issue, STATUS } from '@prisma/client';
-import { ArrowUpIcon } from '@radix-ui/react-icons';
-import { Table } from '@radix-ui/themes';
+import { ArrowDownIcon, ArrowUpIcon } from '@radix-ui/react-icons';
+import { Table, Text } from '@radix-ui/themes';
 import NextLink from 'next/link';
 
 export interface IssueQuery {
@@ -25,10 +25,25 @@ const IssueTable = ( { issues, searchParams }: Props ) => {
                         key={ col.value }
                         className={ col.className }
                     >
-                        <NextLink href={ { query: { ...searchParams, orderBy: col.value } } }>
-                            { col.label }
+                        <Text> { col.value }</Text>
+                        <NextLink
+                            href={ { query: { ...searchParams, orderBy: col.value + "_asc" } } }>
+                            <ArrowUpIcon
+                                className="inline"
+                                color={ `${searchParams.orderBy?.split( '_' )[ 1 ] === 'asc' ?
+                                    "black" :
+                                    "gray"}`
+                                } />
                         </NextLink>
-                        { col.value === searchParams.orderBy && <ArrowUpIcon className="inline" /> }
+                        <NextLink
+                            href={ { query: { ...searchParams, orderBy: col.value + "_desc" } } }>
+                            <ArrowDownIcon
+                                className="inline"
+                                color={ `${searchParams.orderBy?.split( '_' )[ 1 ] === 'desc' ?
+                                    "black" :
+                                    "gray"}`
+                                } />
+                        </NextLink>
 
                     </Table.ColumnHeaderCell> ) }
                 </Table.Row>
