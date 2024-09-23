@@ -2,7 +2,9 @@ import { IssueStatusBadge, Link } from '@/app/components';
 import { Issue, STATUS } from '@prisma/client';
 import { ArrowDownIcon, ArrowUpIcon } from '@radix-ui/react-icons';
 import { Table, Text } from '@radix-ui/themes';
+import classNames from 'classnames';
 import NextLink from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export interface IssueQuery {
     status: STATUS,
@@ -17,7 +19,7 @@ interface Props {
 }
 
 const IssueTable = ( { issues, searchParams }: Props ) => {
-
+    console.log( searchParams )
     return (
         <Table.Root variant="surface">
             <Table.Header>
@@ -26,12 +28,20 @@ const IssueTable = ( { issues, searchParams }: Props ) => {
                         key={ col.value }
                         className={ col.className }
                     >
-                        <Text> { col.value }</Text>
+                        <Text className={
+                            classNames( {
+                                "nav-link": true,
+                                "!text-zinc-900": col.value === searchParams.orderBy?.split( "_" )[ 0 ],
+                            } )
+                        }
+                        > { col.value }</Text>
+
                         <NextLink
                             href={ { query: { ...searchParams, orderBy: col.value + "_asc" } } }>
                             <ArrowUpIcon
                                 className="inline"
-                                color={ `${searchParams.orderBy?.split( '_' )[ 1 ] === 'asc' ?
+                                color={ `${col.value === searchParams.orderBy?.split( '_' )[ 0 ] &&
+                                    searchParams.orderBy?.split( '_' )[ 1 ] === 'asc' ?
                                     "black" :
                                     "gray"}`
                                 } />
@@ -40,7 +50,8 @@ const IssueTable = ( { issues, searchParams }: Props ) => {
                             href={ { query: { ...searchParams, orderBy: col.value + "_desc" } } }>
                             <ArrowDownIcon
                                 className="inline"
-                                color={ `${searchParams.orderBy?.split( '_' )[ 1 ] === 'desc' ?
+                                color={ `${col.value === searchParams.orderBy?.split( '_' )[ 0 ] &&
+                                    searchParams.orderBy?.split( '_' )[ 1 ] === 'desc' ?
                                     "black" :
                                     "gray"}`
                                 } />
@@ -73,7 +84,7 @@ const IssueTable = ( { issues, searchParams }: Props ) => {
                     </Table.Row>
                 ) ) }
             </Table.Body>
-        </Table.Root>
+        </Table.Root >
     )
 }
 
