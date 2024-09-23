@@ -7,7 +7,8 @@ import NextLink from 'next/link';
 export interface IssueQuery {
     status: STATUS,
     orderBy: keyof Issue,
-    page: string
+    page: string,
+    pageSize: string,
 }
 
 interface Props {

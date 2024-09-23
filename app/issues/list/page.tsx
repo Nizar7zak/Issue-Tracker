@@ -1,3 +1,4 @@
+import PageSizeDropDown from "@/app/components/PageSizeDropDown"
 import Pagination from "@/app/components/Pagination"
 import { prisma } from "@/prisma/client"
 import { Issue, STATUS } from "@prisma/client"
@@ -27,11 +28,11 @@ const IssuesPage = async ( { searchParams }: Props ) => {
         undefined
 
     const page = parseInt( searchParams.page ) || 1
-    const pageSize = 10
+    const pageSize = parseInt( searchParams.pageSize ) || 10;
 
     const issues = await prisma.issue.findMany( {
         where,
-        orderBy: { [ orderType ]: orderHow },
+        orderBy,
         skip: ( page - 1 ) * pageSize,
         take: pageSize
     } )
@@ -46,11 +47,15 @@ const IssuesPage = async ( { searchParams }: Props ) => {
                     searchParams={ searchParams }
                 /> : null
             }
-            <Pagination
-                itemCount={ issueCount }
-                pageSize={ pageSize }
-                currentPage={ page }
-            />
+
+            <Flex justify="between">
+                <Pagination
+                    itemCount={ issueCount }
+                    pageSize={ pageSize }
+                    currentPage={ page }
+                />
+                <PageSizeDropDown />
+            </Flex>
         </Flex>
     )
 }
