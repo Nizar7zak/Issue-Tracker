@@ -58,7 +58,11 @@ const IssuesPage = async ( { searchParams }: Props ) => {
             }
         } ) as ExtendedIssue[];
 
-    const issueCount = await prisma.issue.count( { where } )
+    const issueCount = searchParams.assignee ? await prisma.issue.count( {
+        where: {
+            status, assignedToUser: { is: {} }
+        },
+    } ) : await prisma.issue.count( { where } )
 
     return (
         <Flex direction='column' gap='5' >
