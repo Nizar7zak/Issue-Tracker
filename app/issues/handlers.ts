@@ -5,6 +5,7 @@ export const handleQueryChange = (
     searchParams: ReadonlyURLSearchParams,
     status: STATUS | string,
     pageSize: string,
+    assignee: string
 ) => {
 
     if ( status === "ALL" )
@@ -16,7 +17,10 @@ export const handleQueryChange = (
     if ( pageSize )
         params.append( 'pageSize', pageSize )
     if ( searchParams.get( 'orderBy' ) )
-    params.append( 'orderBy', searchParams.get( 'orderBy' )! )
-    
+        params.append( 'orderBy', searchParams.get( 'orderBy' )! )
+    if ( assignee )
+        params.append( 'assignee', assignee )
+
+
     return params.size ? '?' + params.toString() : ''
 }

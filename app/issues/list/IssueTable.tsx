@@ -1,20 +1,21 @@
 import { IssueStatusBadge, Link } from '@/app/components';
 import { Issue, STATUS } from '@prisma/client';
 import { ArrowDownIcon, ArrowUpIcon } from '@radix-ui/react-icons';
-import { Table, Text } from '@radix-ui/themes';
+import { Avatar, Flex, Table, Text } from '@radix-ui/themes';
 import classNames from 'classnames';
 import NextLink from 'next/link';
-import { usePathname } from 'next/navigation';
+import { ExtendedIssue } from './page';
 
 export interface IssueQuery {
     status: STATUS,
     orderBy: keyof Issue,
     page: string,
     pageSize: string,
+    assignee: string
 }
 
 interface Props {
-    issues: Issue[],
+    issues: ExtendedIssue[],
     searchParams: IssueQuery
 }
 
@@ -57,6 +58,13 @@ const IssueTable = ( { issues, searchParams }: Props ) => {
                         </NextLink>
 
                     </Table.ColumnHeaderCell> ) }
+
+                    <Table.ColumnHeaderCell className='hidden md:table-cell'>
+                        <Text className={ classNames( {
+                            "nav-link": true,
+                            "!text-zinc-900": "true" === searchParams.assignee
+                        } ) }> Assigned to User</Text>
+                    </Table.ColumnHeaderCell>
                 </Table.Row>
             </Table.Header>
             <Table.Body>
@@ -78,6 +86,18 @@ const IssueTable = ( { issues, searchParams }: Props ) => {
 
                         <Table.Cell className="hidden md:table-cell">
                             { issue.createdAt.toDateString() }
+                        </Table.Cell>
+                        <Table.Cell className="hidden md:table-cell">
+                            { issue.assignedToUser &&
+                                <Flex gap='2' align='center'>
+                                    <Avatar
+                                        src={ issue.assignedToUser.image }
+                                        fallback="?"
+                                        size='1'
+                                        radius='full'
+                                    />
+                                    <Text >{ issue.assignedToUser.name }</Text>
+                                </Flex> }
                         </Table.Cell>
 
                     </Table.Row>

@@ -11,7 +11,8 @@ const PageSizeDropDown = () => {
 
     const handlePageSizeChange = ( pageSize: string ) => {
         const status = searchParams.get( 'status' ) || ""
-        const query = handleQueryChange( searchParams, status, pageSize )
+        const assignee = searchParams.get( 'assignee' ) || ''
+        const query = handleQueryChange( searchParams, status, pageSize, assignee )
         router.push( query )
     }
 

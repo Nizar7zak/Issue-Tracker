@@ -10,9 +10,15 @@ import IssueTable, { columnsName, IssueQuery } from "./IssueTable"
 interface Props {
     searchParams: IssueQuery
 }
+export interface ExtendedIssue extends Issue {
+    assignedToUser?: {
+        id: string;
+        name: string;
+        image: string
+    } | null;
+}
 
 const IssuesPage = async ( { searchParams }: Props ) => {
-
     const statuses = Object.values( STATUS )
     const status = statuses.includes( searchParams.status ) ?
         searchParams.status :
@@ -34,8 +40,12 @@ const IssuesPage = async ( { searchParams }: Props ) => {
         where,
         orderBy,
         skip: ( page - 1 ) * pageSize,
-        take: pageSize
-    } )
+        take: pageSize,
+        include: {
+            assignedToUser: true
+        }
+    } ) as ExtendedIssue[];
+
     const issueCount = await prisma.issue.count( { where } )
 
     return (
