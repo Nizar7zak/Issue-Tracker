@@ -36,15 +36,27 @@ const IssuesPage = async ( { searchParams }: Props ) => {
     const page = parseInt( searchParams.page ) || 1
     const pageSize = parseInt( searchParams.pageSize ) || 10;
 
-    const issues = await prisma.issue.findMany( {
-        where,
-        orderBy,
-        skip: ( page - 1 ) * pageSize,
-        take: pageSize,
-        include: {
-            assignedToUser: true
-        }
-    } ) as ExtendedIssue[];
+    const issues = searchParams.assignee ?
+        await prisma.issue.findMany( {
+            where: {
+                status, assignedToUser: { is: {} }
+            },
+            orderBy,
+            skip: ( page - 1 ) * pageSize,
+            take: pageSize,
+            include: {
+                assignedToUser: true
+            }
+        } ) as ExtendedIssue[] :
+        await prisma.issue.findMany( {
+            where,
+            orderBy,
+            skip: ( page - 1 ) * pageSize,
+            take: pageSize,
+            include: {
+                assignedToUser: true
+            }
+        } ) as ExtendedIssue[];
 
     const issueCount = await prisma.issue.count( { where } )
 

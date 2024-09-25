@@ -1,5 +1,5 @@
 "use client"
-import { Select } from '@radix-ui/themes'
+import { Flex, Select } from '@radix-ui/themes'
 import { handleQueryChange } from '../issues/handlers';
 import { useRouter, useSearchParams } from 'next/navigation';
 
@@ -16,11 +16,13 @@ const PageSizeDropDown = () => {
         router.push( query )
     }
 
-    return (
+    return ( <div className='hidden md:block'>
+        <span className='mr-2'>Page Size:</span>
         <Select.Root
+            defaultValue={ searchParams.get( 'pageSize' ) || '10' }
             onValueChange={ ( value ) => handlePageSizeChange( value ) }
         >
-            <Select.Trigger placeholder="Page Size" />
+            <Select.Trigger />
             <Select.Content>
                 <Select.Group>
                     <Select.Label>Page Size</Select.Label>
@@ -35,6 +37,7 @@ const PageSizeDropDown = () => {
                 </Select.Group>
             </Select.Content>
         </Select.Root>
+    </div>
     )
 }
 

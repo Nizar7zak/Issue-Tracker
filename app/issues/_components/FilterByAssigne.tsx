@@ -10,7 +10,8 @@ const FilterByAssigne = () => {
     const handleUserByFilter = ( value: boolean ) => {
         const status = searchParams.get( 'status' ) || ""
         const pageSize = searchParams.get( 'pageSize' ) || "10"
-        const assignee = value ? "true" : "false"
+        const assignee = value ? "true" : ""
+
         const query = handleQueryChange( searchParams, status, pageSize, assignee )
         router.push( query )
         router.refresh()
@@ -19,6 +20,7 @@ const FilterByAssigne = () => {
         <Flex align="end" gap='2' >
             <span>Assigned Issues: </span>
             <Switch
+                defaultChecked={ !!searchParams.get( 'assignee' ) }
                 onCheckedChange={ ( value ) => handleUserByFilter( value ) }
             />
         </Flex>
