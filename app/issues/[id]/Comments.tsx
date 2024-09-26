@@ -1,6 +1,6 @@
 "use client"
 import { Comment, User } from '@prisma/client'
-import { Avatar, Card, Flex, Table, Text } from '@radix-ui/themes'
+import { Avatar, Card, Flex, Text } from '@radix-ui/themes'
 import axios from 'axios'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -34,14 +34,13 @@ const Comments = () => {
         return null
 
     return (
-        <div className='w-5/6 ml-5' >
-            { comments?.map( ( comment ) => <Card
-                className='hover:bg-slate-200 mb-3'
+        <Card className='flex flex-col ' variant='surface' >
+            { comments?.map( ( comment ) => <div
+                className='mb-4'
                 key={ comment.id }
-                variant="surface"
+
             >
                 <Flex align='center'>
-
                     <Avatar
                         src={ comment.user.image! }
                         fallback="?"
@@ -65,8 +64,8 @@ const Comments = () => {
                         <Text>{ comment.content }</Text>
                     </Flex>
                 </Flex>
-            </Card> ) }
-        </div>
+            </div> ) }
+        </Card>
     )
 }
 
