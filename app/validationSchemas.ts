@@ -12,3 +12,7 @@ export const patchIssueSchema = z.object( {
     assignedToUserId: z.string().min( 1, "Assigned to user id is required" ).max( 255 ).optional().nullable(),
     status: z.enum( [ 'OPEN', 'CLOSED', 'IN_PROGRESS' ] ).optional()
 } )
+
+export const commentSchema = z.object( {
+    content: z.string().min( 1 ).max( 255 ),
+} )
