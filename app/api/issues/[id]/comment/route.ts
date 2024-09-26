@@ -41,3 +41,28 @@ export const POST = async (
     return NextResponse.json( { newComment }, { status: 201 } )
 }
 
+export const GET = async (
+    request: NextRequest,
+    { params: { id: issueId } }: { params: { id: string } }
+) => {
+
+    const issue = await prisma.issue.findMany( {
+        where: { id: parseInt( issueId ) }
+    } )
+
+    if ( !issue )
+        return NextResponse.json( { error: 'Invalid Issue ' }, { status: 404 } )
+
+    const comments = await prisma.comment.findMany( {
+        where: {
+            issueId: parseInt( issueId )
+        },
+        include: {
+            user: true
+        }
+    } )
+
+    return NextResponse.json( comments, { status: 200 } )
+
+}
+
