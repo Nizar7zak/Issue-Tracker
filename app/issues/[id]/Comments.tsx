@@ -75,9 +75,13 @@ const Comments = () => {
                                 </Text>
                                 <Text>{ comment.content }</Text>
                             </Flex>
-                            <Button color='red' size='4'  >
-                                <TrashIcon width={ 20 } height={ 20 } />
-                            </Button>
+                            {
+                                session?.user?.email === comment.user.email &&
+                                <Button color='red' size='4'  >
+                                    <TrashIcon width={ 20 } height={ 20 } />
+                                </Button>
+                            }
+
 
                         </Flex>
                     </Flex>
