@@ -1,9 +1,12 @@
 "use client"
 import { Comment, User } from '@prisma/client'
-import { Avatar, Card, Flex, Text } from '@radix-ui/themes'
+import { ChatBubbleIcon, TrashIcon } from '@radix-ui/react-icons'
+import { Avatar, Box, Button, Card, Flex, Popover, Text, TextArea } from '@radix-ui/themes'
 import axios from 'axios'
+import { useSession } from 'next-auth/react'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
+
 
 
 interface CommentWithUser extends Comment {
@@ -12,6 +15,9 @@ interface CommentWithUser extends Comment {
 
 
 const Comments = () => {
+    const [ comment, setComment ] = useState( '' )
+    const [ error, setError ] = useState( '' )
+    const { status, data: session } = useSession()
     const params = useParams()
     const [ comments, setComments ] = useState<CommentWithUser[]>()
 
@@ -26,46 +32,100 @@ const Comments = () => {
         }
     }
 
+    const postComment = () => {
+
+    }
+
     useEffect( () => {
         getComments()
     }, [] )
 
-    if ( !comments?.length )
-        return null
-
     return (
-        <Card className='flex flex-col ' variant='surface' >
-            { comments?.map( ( comment ) => <div
-                className='mb-4'
-                key={ comment.id }
+        <>
+            { comments?.length ? <Card className='flex flex-col ' variant='surface' >
+                { comments?.map( ( comment ) => <div
 
-            >
-                <Flex align='center'>
-                    <Avatar
-                        src={ comment.user.image! }
-                        fallback="?"
-                        size="4"
-                        radius="full"
-                        className="cursor-pointer"
-                    />
-                    <Flex
-                        className='bg-slate-100 rounded-full'
-                        width='98%'
-                        p='1'
-                        pl='4'
-                        align="start"
-                        direction='column'
-                        ml='2'
-                        justify='center'
-                    >
-                        <Text color="purple" >
-                            { comment.user.name }
-                        </Text>
-                        <Text>{ comment.content }</Text>
+                    className='mb-4 border-b-0'
+                    key={ comment.id }
+
+                >
+                    <Flex align='center'>
+                        <Avatar
+                            src={ comment.user.image! }
+                            fallback="?"
+                            size="2"
+                            radius="full"
+                            className="cursor-pointer"
+                        />
+                        <Flex
+                            className='bg-slate-100 rounded-lg'
+                            width='98%'
+                            ml='2'
+                            justify='between'
+                        >
+                            <Flex
+                                p='1'
+                                pl='4'
+                                align="start"
+                                direction='column'
+                                justify='center'
+                            >
+                                <Text className='font-bold' color="purple" >
+                                    { comment.user.name }
+                                </Text>
+                                <Text>{ comment.content }</Text>
+                            </Flex>
+                            <Button color='red' size='4'  >
+                                <TrashIcon width={ 20 } height={ 20 } />
+                            </Button>
+
+                        </Flex>
                     </Flex>
-                </Flex>
-            </div> ) }
-        </Card>
+                </div> ) }
+            </Card>
+                : null
+            }
+            { status === "authenticated" &&
+                <Popover.Root>
+                    <Popover.Trigger>
+                        <Button variant="soft" m='4'>
+                            <ChatBubbleIcon width="16" height="16" />
+                            Comment
+                        </Button>
+                    </Popover.Trigger>
+                    <Popover.Content
+                        width="100%"
+                        style={ {
+                            maxWidth: '780px',
+                            width: '70vw',
+                        } }
+                    >
+                        <Flex gap="3">
+                            <Avatar
+                                size="3"
+                                src={ session.user?.image! }
+                                fallback="?"
+                                radius="full"
+                            />
+                            <Box flexGrow="1">
+                                <TextArea
+                                    readOnly={ false }
+                                    placeholder="Write a comment…"
+                                    size='3'
+                                    value={ comment }
+                                    onChange={ ( event ) => setComment( event.target.value ) } />
+                                <Popover.Close>
+                                    <Button
+                                        mt='2'
+                                        onClick={ postComment }
+                                    >Comment</Button>
+                                </Popover.Close>
+                            </Box>
+                        </Flex>
+                    </Popover.Content>
+                </Popover.Root>
+            }
+        </>
     )
 }
 
