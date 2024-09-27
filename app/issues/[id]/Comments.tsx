@@ -12,7 +12,6 @@ interface CommentWithUser extends Comment {
     user: User
 }
 
-
 const Comments = () => {
     const [ comment, setComment ] = useState( '' )
     const [ error, setError ] = useState( '' )
@@ -37,15 +36,29 @@ const Comments = () => {
             await axios.delete(
                 `http://localhost:3000/api/issues/${params.id}/comment`, { data: { id } }
             )
+            getComments()
             router.refresh()
-
         } catch ( error ) {
             return null
         }
     }
 
-    const postComment = () => {
+    const postComment = async () => {
+        try {
+            await axios.post(
+                `http://localhost:3000/api/issues/${params.id}/comment`,
+                {
+                    content: comment,
+                }
+            )
+            getComments()
+            router.refresh()
 
+            setComment( '' )
+
+        } catch ( error ) {
+            return null
+        }
     }
 
     useEffect( () => {
@@ -89,7 +102,7 @@ const Comments = () => {
                             </Flex>
                             {
                                 session?.user?.email === comment.user.email &&
-                                <Button color='red' size='4' onClick={ () => deleteComment( comment.id ) } >
+                                <Button color='red' size='3' m='2' onClick={ () => deleteComment( comment.id ) } >
                                     <TrashIcon width={ 20 } height={ 20 } />
                                 </Button>
                             }
@@ -124,7 +137,6 @@ const Comments = () => {
                             />
                             <Box flexGrow="1">
                                 <TextArea
-                                    readOnly={ false }
                                     placeholder="Write a comment…"
                                     size='3'
                                     value={ comment }
