@@ -69,3 +69,6 @@ export const generateMetadata = async ( { params }: Props ) => {
 }
 
 export default IssueDetailsPage
+
+export const dynamic = 'force-dynamic'
+

@@ -4,9 +4,8 @@ import { ChatBubbleIcon, TrashIcon } from '@radix-ui/react-icons'
 import { Avatar, Box, Button, Card, Flex, Popover, Text, TextArea } from '@radix-ui/themes'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-
 
 
 interface CommentWithUser extends Comment {
@@ -20,6 +19,7 @@ const Comments = () => {
     const { status, data: session } = useSession()
     const params = useParams()
     const [ comments, setComments ] = useState<CommentWithUser[]>()
+    const router = useRouter()
 
     const getComments = async () => {
         try {
@@ -27,6 +27,18 @@ const Comments = () => {
                 `http://localhost:3000/api/issues/${params.id}/comment`
             )
             setComments( res.data )
+        } catch ( error ) {
+            return null
+        }
+    }
+
+    const deleteComment = async ( id: number ) => {
+        try {
+            await axios.delete(
+                `http://localhost:3000/api/issues/${params.id}/comment`, { data: { id } }
+            )
+            router.refresh()
+
         } catch ( error ) {
             return null
         }
@@ -77,11 +89,10 @@ const Comments = () => {
                             </Flex>
                             {
                                 session?.user?.email === comment.user.email &&
-                                <Button color='red' size='4'  >
+                                <Button color='red' size='4' onClick={ () => deleteComment( comment.id ) } >
                                     <TrashIcon width={ 20 } height={ 20 } />
                                 </Button>
                             }
-
 
                         </Flex>
                     </Flex>
