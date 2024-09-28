@@ -13,19 +13,21 @@ const CommentButton = () => {
     const params = useParams()
     const queryClient = useQueryClient()
 
-    const addCommentMutation = useMutation(
-        ( newComment: { content: string } ) =>
-            axios.post( `/api/issues/${params.id}/comment`, newComment ),
-        {
-            onSuccess: () => {
-                queryClient.invalidateQueries( [ 'comments', params.id ] );
-                setComment( '' )
-            },
+    const addCommentMutation = useMutation( {
+        mutationFn: (
+            newComment: string
+        ) => axios.post(
+            `/api/issues/${params.id}/comment`,
+            { content: newComment }
+        ),
+        onSuccess: () => {
+            queryClient.invalidateQueries( [ 'comments', params.id ] );
+            setComment( '' )
+        },
 
-        }
-    );
+    } );
     const handleAddComment = ( newComment: string ) => {
-        addCommentMutation.mutate( { content: newComment } );
+        addCommentMutation.mutate( newComment );
     };
 
     return (
