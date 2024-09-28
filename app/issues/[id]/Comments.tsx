@@ -1,11 +1,12 @@
 "use client"
 import { Comment, User } from '@prisma/client'
-import { ChatBubbleIcon, TrashIcon } from '@radix-ui/react-icons'
-import { Avatar, Box, Button, Card, Flex, Popover, Text, TextArea } from '@radix-ui/themes'
+import { TrashIcon } from '@radix-ui/react-icons'
+import { Avatar, Button, Card, Flex, Text } from '@radix-ui/themes'
+import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
 import { useParams, useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import CommentButton from './CommentButton'
 
 
 interface CommentWithUser extends Comment {
@@ -13,57 +14,30 @@ interface CommentWithUser extends Comment {
 }
 
 const Comments = () => {
-    const [ comment, setComment ] = useState( '' )
-    const [ error, setError ] = useState( '' )
     const { status, data: session } = useSession()
+
     const params = useParams()
-    const [ comments, setComments ] = useState<CommentWithUser[]>()
     const router = useRouter()
 
-    const getComments = async () => {
-        try {
-            const res = await axios.get<CommentWithUser[]>(
-                `http://localhost:3000/api/issues/${params.id}/comment`
-            )
-            setComments( res.data )
-        } catch ( error ) {
-            return null
-        }
-    }
+
+
+    const { data: comments, error, isLoading } = useQuery<CommentWithUser[]>( {
+        queryKey: [ 'comments', params.id ],
+        queryFn: () => axios
+            .get<CommentWithUser[]>( `/api/issues/${params.id}/comment` )
+            .then( res => res.data ),
+    } );
 
     const deleteComment = async ( id: number ) => {
         try {
             await axios.delete(
-                `http://localhost:3000/api/issues/${params.id}/comment`, { data: { id } }
+                `/api/issues/${params.id}/comment`, { data: { id } }
             )
-            getComments()
             router.refresh()
         } catch ( error ) {
             return null
         }
     }
-
-    const postComment = async () => {
-        try {
-            await axios.post(
-                `http://localhost:3000/api/issues/${params.id}/comment`,
-                {
-                    content: comment,
-                }
-            )
-            getComments()
-            router.refresh()
-
-            setComment( '' )
-
-        } catch ( error ) {
-            return null
-        }
-    }
-
-    useEffect( () => {
-        getComments()
-    }, [] )
 
     return (
         <>
@@ -113,45 +87,7 @@ const Comments = () => {
             </Card>
                 : null
             }
-            { status === "authenticated" &&
-                <Popover.Root>
-                    <Popover.Trigger>
-                        <Button variant="soft" m='4'>
-                            <ChatBubbleIcon width="16" height="16" />
-                            Comment
-                        </Button>
-                    </Popover.Trigger>
-                    <Popover.Content
-                        width="100%"
-                        style={ {
-                            maxWidth: '780px',
-                            width: '70vw',
-                        } }
-                    >
-                        <Flex gap="3">
-                            <Avatar
-                                size="3"
-                                src={ session.user?.image! }
-                                fallback="?"
-                                radius="full"
-                            />
-                            <Box flexGrow="1">
-                                <TextArea
-                                    placeholder="Write a comment…"
-                                    size='3'
-                                    value={ comment }
-                                    onChange={ ( event ) => setComment( event.target.value ) } />
-                                <Popover.Close>
-                                    <Button
-                                        mt='2'
-                                        onClick={ postComment }
-                                    >Comment</Button>
-                                </Popover.Close>
-                            </Box>
-                        </Flex>
-                    </Popover.Content>
-                </Popover.Root>
-            }
+            <CommentButton />
         </>
     )
 }
