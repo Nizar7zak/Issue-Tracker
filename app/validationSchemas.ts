@@ -16,3 +16,8 @@ export const patchIssueSchema = z.object( {
 export const commentSchema = z.object( {
     content: z.string().min( 1 ).max( 255 ),
 } )
+
+export const projectSchema = z.object( {
+    title: z.string().min( 1 ).max( 255 ),
+    description: z.string().min( 1 ).max( 65535 ).optional(),
+} )
