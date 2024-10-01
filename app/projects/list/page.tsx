@@ -1,5 +1,6 @@
 import { prisma } from "@/prisma/client"
-import { Card, Flex, Grid, Heading, Text } from "@radix-ui/themes"
+import { Button, Card, Flex, Grid, Heading, Text } from "@radix-ui/themes"
+import Link from "next/link"
 
 const ProjectsPage = async () => {
   const projects = await prisma.project.findMany( {
@@ -7,8 +8,15 @@ const ProjectsPage = async () => {
   } )
   return (
     <>
-      <Heading mb='5'>Projects:</Heading>
+      <Flex justify='between'>
+        <Heading mb='5'>Projects:</Heading>
+        <Button>
+          <Link href='/projects/new'>
+            New Project
+          </Link>
+        </Button>
 
+      </Flex >
       <Grid columns={ { initial: '1', md: '2', lg: '3' } } gapX="9" gapY='5' width="auto" >
         { projects.map( ( project ) => <Card
           style={ { padding: 0 } }
@@ -23,5 +31,6 @@ const ProjectsPage = async () => {
     </>
   )
 }
+export const dynamic = 'force-dynamic'
 
 export default ProjectsPage
