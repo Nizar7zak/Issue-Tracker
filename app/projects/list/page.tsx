@@ -1,6 +1,6 @@
+import NewButton from "@/app/components/NewButton"
 import { prisma } from "@/prisma/client"
-import { Button, Card, Flex, Grid, Heading, Text } from "@radix-ui/themes"
-import Link from "next/link"
+import { Card, Flex, Grid, Heading, Text } from "@radix-ui/themes"
 
 const ProjectsPage = async () => {
   const projects = await prisma.project.findMany( {
@@ -10,11 +10,7 @@ const ProjectsPage = async () => {
     <>
       <Flex justify='between'>
         <Heading mb='5'>Projects:</Heading>
-        <Button>
-          <Link href='/projects/new'>
-            New Project
-          </Link>
-        </Button>
+        <NewButton title='Project' path="projects" />
 
       </Flex >
       <Grid columns={ { initial: '1', md: '2', lg: '3' } } gapX="9" gapY='5' width="auto" >

@@ -1,6 +1,6 @@
+import NewButton from '@/app/components/NewButton'
 import IssueStatusSelector from '@/app/issues/_components/IssueStatusSelector'
-import { Button, Flex } from '@radix-ui/themes'
-import Link from 'next/link'
+import { Flex } from '@radix-ui/themes'
 import FilterByAssigne from '../_components/FilterByAssigne'
 
 const IssueActions = () => {
@@ -10,11 +10,7 @@ const IssueActions = () => {
                 <IssueStatusSelector />
                 <FilterByAssigne />
             </Flex>
-            <Button>
-                <Link href='/issues/new'>
-                    New Issue
-                </Link>
-            </Button>
+            <NewButton title='Issue' path='issues' />
         </Flex>
     )
 }
