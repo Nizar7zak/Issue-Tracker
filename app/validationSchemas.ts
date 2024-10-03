@@ -21,3 +21,9 @@ export const projectSchema = z.object( {
     title: z.string().min( 1 ).max( 255 ),
     description: z.string().min( 1 ).max( 65535 ).optional(),
 } )
+
+export const patchProjectSchema = z.object( {
+    title: z.string().min( 1 ).max( 255 ).optional(),
+    description: z.string().min( 1 ).max( 65535 ).optional(),
+
+} )
