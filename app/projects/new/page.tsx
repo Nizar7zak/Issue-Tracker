@@ -1,9 +1,17 @@
-import React from 'react'
+import dynamic from "next/dynamic"
+import ProjectFormLoading from "./loading"
 
-const page = () => {
+const ProjectForm = dynamic(
+  () => import( '@/app/issues/_components/IssueForm' ),
+  {
+    ssr: false,
+    loading: () => <ProjectFormLoading />
+  }
+)
+const NewIssuePage = () => {
   return (
-    <div>page</div>
+    <ProjectForm />
   )
 }
 
-export default page
+export default NewIssuePage

@@ -1,7 +1,7 @@
 import { Skeleton } from '@/app/components'
 import { Box } from '@radix-ui/themes'
 
-const IssueFormLoading = () => {
+const FormLoading = () => {
     return (
         <Box className='max-w-xl'>
             <Skeleton height='2rem' />
@@ -10,4 +10,4 @@ const IssueFormLoading = () => {
     )
 }
 
-export default IssueFormLoading
+export default FormLoading

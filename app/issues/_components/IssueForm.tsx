@@ -1,13 +1,13 @@
 "use client"
 
-import { ErrorMessage, Spinner } from "@/app/components";
+import { ErrorMessage } from "@/app/components";
 import ErrorCallOut from "@/app/components/Form/ErrorCallOut";
 import FormTitle from "@/app/components/Form/FormTitle";
+import SubmitButton from "@/app/components/Form/SubmitButton";
 import IssueStatusSelector from "@/app/issues/_components/IssueStatusSelector";
 import { issueSchema } from "@/app/validationSchemas";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Issue, STATUS } from "@prisma/client";
-import { Button } from "@radix-ui/themes";
 import axios from "axios";
 import "easymde/dist/easymde.min.css";
 import { useRouter } from "next/navigation";
@@ -62,7 +62,7 @@ const IssueForm = ( { issue }: { issue?: Issue } ) => {
                 className="space-y-3"
                 onSubmit={ onSubmit } >
                 <FormTitle
-                placeholder="Title..."
+                    placeholder="Title..."
                     defaultValue={ issue?.title }
                     register={ register( "title" ) }
                     error={ errors.title }
@@ -79,10 +79,7 @@ const IssueForm = ( { issue }: { issue?: Issue } ) => {
                 { issue &&
                     <IssueStatusSelector issue={ issue } setStatus={ handleStatusChange } />
                 }
-
-                <Button ml='4' disabled={ isSubmitting }>
-                    { issue ? 'Update Issue' : 'Submit New Issue' }{ " " }{ isSubmitting && <Spinner /> }
-                </Button>
+                <SubmitButton isSubmitting={ isSubmitting } isIssue={ true } />
             </form>
         </div>
     )
