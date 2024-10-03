@@ -1,11 +1,12 @@
 "use client"
 
 import { ErrorMessage, Spinner } from "@/app/components";
+import ErrorCallOut from "@/app/components/Form/ErrorCallOut";
 import IssueStatusSelector from "@/app/issues/_components/IssueStatusSelector";
 import { issueSchema } from "@/app/validationSchemas";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Issue, STATUS } from "@prisma/client";
-import { Button, Callout, TextField } from "@radix-ui/themes";
+import { Button, TextField } from "@radix-ui/themes";
 import axios from "axios";
 import "easymde/dist/easymde.min.css";
 import { useRouter } from "next/navigation";
@@ -55,12 +56,7 @@ const IssueForm = ( { issue }: { issue?: Issue } ) => {
 
     return (
         <div className="max-w-xl">
-            { error &&
-                <Callout.Root color="red" className="mb-5">
-                    <Callout.Text>
-                        { error }
-                    </Callout.Text>
-                </Callout.Root> }
+            { error && <ErrorCallOut error={ error } /> }
             <form
                 className="space-y-3"
                 onSubmit={ onSubmit } >
