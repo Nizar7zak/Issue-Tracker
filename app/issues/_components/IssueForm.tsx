@@ -2,11 +2,12 @@
 
 import { ErrorMessage, Spinner } from "@/app/components";
 import ErrorCallOut from "@/app/components/Form/ErrorCallOut";
+import FormTitle from "@/app/components/Form/FormTitle";
 import IssueStatusSelector from "@/app/issues/_components/IssueStatusSelector";
 import { issueSchema } from "@/app/validationSchemas";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Issue, STATUS } from "@prisma/client";
-import { Button, TextField } from "@radix-ui/themes";
+import { Button } from "@radix-ui/themes";
 import axios from "axios";
 import "easymde/dist/easymde.min.css";
 import { useRouter } from "next/navigation";
@@ -60,8 +61,12 @@ const IssueForm = ( { issue }: { issue?: Issue } ) => {
             <form
                 className="space-y-3"
                 onSubmit={ onSubmit } >
-                <TextField.Root defaultValue={ issue?.title } placeholder="Title" { ...register( "title" ) } />
-                <ErrorMessage>{ errors.title?.message }</ErrorMessage>
+                <FormTitle
+                placeholder="Title..."
+                    defaultValue={ issue?.title }
+                    register={ register( "title" ) }
+                    error={ errors.title }
+                />
 
                 <Controller
                     name="description"
