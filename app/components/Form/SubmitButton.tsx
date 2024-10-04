@@ -2,16 +2,17 @@ import { Button, Spinner } from '@radix-ui/themes'
 
 interface Props {
     isSubmitting: boolean,
+    isUpdate?: string,
     isIssue: boolean,
 }
 
-const SubmitButton = ( { isSubmitting, isIssue }: Props ) => {
+const SubmitButton = ( { isSubmitting, isUpdate, isIssue }: Props ) => {
     return (
         <Button ml='4' disabled={ isSubmitting }>
             {
-                isIssue ?
-                    'Update Issue' :
-                    'Submit New Issue' }
+                isUpdate ?
+                    isIssue ? 'Update Issue' : 'Update Project' :
+                    isIssue ? 'Submit New Issue' : 'Submit New Project' }
             { " " }
             { isSubmitting && <Spinner /> }
         </Button>

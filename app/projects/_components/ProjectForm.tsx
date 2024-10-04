@@ -70,7 +70,7 @@ const ProjectForm = ( { project }: { project?: Project } ) => {
         />
         <ErrorMessage>{ errors.description?.message }</ErrorMessage>
 
-        <SubmitButton isSubmitting={ isSubmitting } isIssue={ false } />
+        <SubmitButton isSubmitting={ isSubmitting } isUpdate={ project?.title } isIssue={ false } />
       </form>
     </div>
   )

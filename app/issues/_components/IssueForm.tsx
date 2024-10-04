@@ -79,7 +79,7 @@ const IssueForm = ( { issue }: { issue?: Issue } ) => {
                 { issue &&
                     <IssueStatusSelector issue={ issue } setStatus={ handleStatusChange } />
                 }
-                <SubmitButton isSubmitting={ isSubmitting } isIssue={ true } />
+                <SubmitButton isSubmitting={ isSubmitting } isUpdate={ issue?.title } isIssue={ true } />
             </form>
         </div>
     )
