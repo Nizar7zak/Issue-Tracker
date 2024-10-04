@@ -2,7 +2,7 @@ import dynamic from "next/dynamic"
 import ProjectFormLoading from "./loading"
 
 const ProjectForm = dynamic(
-  () => import( '@/app/issues/_components/IssueForm' ),
+  () => import( '@/app/projects/_components/ProjectForm' ),
   {
     ssr: false,
     loading: () => <ProjectFormLoading />
