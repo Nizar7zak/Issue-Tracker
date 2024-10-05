@@ -1,6 +1,7 @@
 import NewButton from "@/app/components/NewButton"
 import { prisma } from "@/prisma/client"
 import { Card, Flex, Grid, Heading, Text } from "@radix-ui/themes"
+import Link from "next/link"
 
 const ProjectsPage = async () => {
   const projects = await prisma.project.findMany( {
@@ -19,7 +20,9 @@ const ProjectsPage = async () => {
           key={ project.id }
         >
           <Flex direction='column' align='start'>
-            <Heading as="h4" className="bg-violet-100 w-full text-center py-3" >{ project.title }</Heading>
+            <Link href={ `/projects/${project.id}` } className="w-full">
+              <Heading as="h4" className="bg-violet-100 w-full text-center py-3" >{ project.title }</Heading>
+            </Link>
             <Text className="my-4 ml-4">dd{ project.description }</Text>
           </Flex>
         </Card> ) }

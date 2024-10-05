@@ -1,20 +1,22 @@
 "use client"
 import { TrashIcon } from '@radix-ui/react-icons'
-import { AlertDialog, Button, Flex, Spinner } from '@radix-ui/themes'
+import { AlertDialog, Button, Flex, Spinner, Text } from '@radix-ui/themes'
 import axios from 'axios'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-const DeleteIssueButton = ( { issueId }: { issueId: number } ) => {
+const DeleteButton = ( { id }: { id: number } ) => {
     const [ error, setError ] = useState( false )
     const [ isDeleting, setDeleting ] = useState( false )
     const router = useRouter()
+    const pathName = usePathname()
+    const path = pathName.split( '/' ).includes( 'issues' ) ? 'issues' : 'projects'
 
     const onDelete = async ( id: number ) => {
         try {
             setDeleting( true )
-            await axios.delete( `/api/issues/${id}` )
-            router.push( '/issues/list' )
+            await axios.delete( `/api/${path}/${id}` )
+            router.push( `/${path}/list` )
             router.refresh()
         } catch ( error ) {
             setDeleting( false )
@@ -28,7 +30,9 @@ const DeleteIssueButton = ( { issueId }: { issueId: number } ) => {
                 <AlertDialog.Trigger>
                     <Button color='red'>
                         <TrashIcon />
-                        Delete Issue
+                        <Text className='text-nowrap'>
+                            Delete { path === 'issues' ? "Issue" : "Project" }
+                        </Text>
                     </Button>
                 </AlertDialog.Trigger>
                 <AlertDialog.Content>
@@ -36,7 +40,7 @@ const DeleteIssueButton = ( { issueId }: { issueId: number } ) => {
                         Confirm Deletion
                     </AlertDialog.Title>
                     <AlertDialog.Description>
-                        Are you sure you want to delete this Issue? This action cannot be undone!
+                        Are you sure you want to delete this { path === 'issues' ? "Issue" : "Project" }? This action cannot be undone!
                     </AlertDialog.Description>
                     <Flex mt='3' gap='3'>
                         <AlertDialog.Cancel>
@@ -45,8 +49,8 @@ const DeleteIssueButton = ( { issueId }: { issueId: number } ) => {
                             </Button>
                         </AlertDialog.Cancel>
                         <AlertDialog.Action>
-                            <Button color='red' onClick={ () => onDelete( issueId ) } disabled={ isDeleting }>
-                                Delete Issue
+                            <Button color='red' onClick={ () => onDelete( id ) } disabled={ isDeleting }>
+                                Delete { path === 'issues' ? "Issue" : "Project" }
                                 { isDeleting && <Spinner /> }
                             </Button>
                         </AlertDialog.Action>
@@ -59,7 +63,7 @@ const DeleteIssueButton = ( { issueId }: { issueId: number } ) => {
                         Error
                     </AlertDialog.Title>
                     <AlertDialog.Description>
-                        This issue could not be deleted
+                        This { path === 'issues' ? "Issue" : "Project" } could not be deleted
                     </AlertDialog.Description>
                     <Button color='gray' variant='soft' mt='2' onClick={ () => setError( false ) }>
                         OK
@@ -70,4 +74,4 @@ const DeleteIssueButton = ( { issueId }: { issueId: number } ) => {
     )
 }
 
-export default DeleteIssueButton
+export default DeleteButton

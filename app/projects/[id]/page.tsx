@@ -1,44 +1,42 @@
 import authOptions from "@/app/api/auth/[...nextauth]/authOptions"
+import DeleteButton from "@/app/components/DeleteButton"
+import EditButton from "@/app/components/EditButton"
+import EntryDetails from "@/app/components/EntryDetails"
 import { prisma } from "@/prisma/client"
 import { Box, Flex, Grid } from "@radix-ui/themes"
 import { getServerSession } from "next-auth"
 import { notFound } from "next/navigation"
-import AssigneeSelect from "./AssigneeSelect"
-import DeleteButton from "../../components/DeleteButton"
-import EditButton from "../../components/EditButton"
-import EntryDetails from "../../components/EntryDetails"
 
 interface Props {
     params: { id: string }
 }
 
-const fetchUser = ( issueId: number ) => {
-    return prisma.issue.findUnique( {
+const fetchUser = ( projectId: number ) => {
+    return prisma.project.findUnique( {
         where: {
-            id: issueId
+            id: projectId
         }
     } )
 }
-const IssueDetailsPage = async ( { params: { id } }: Props ) => {
+const ProjectDetailsPage = async ( { params: { id } }: Props ) => {
 
     const session = await getServerSession( authOptions )
 
-    const issue = await fetchUser( parseInt( id ) )
-    if ( !issue )
+    const project = await fetchUser( parseInt( id ) )
+    if ( !project )
         notFound()
 
     return (
         <Grid columns={ { initial: "1", sm: "5" } } gap='5'>
             <Box className="md:col-span-4">
-                <EntryDetails entry={ issue } />
+                <EntryDetails entry={ project } />
             </Box>
             {
                 session &&
                 <Box>
                     <Flex direction='column' gap='4'>
-                        <AssigneeSelect issue={ issue } />
-                        <EditButton id={ issue.id } />
-                        <DeleteButton id={ issue.id } />
+                        <EditButton id={ project.id } />
+                        <DeleteButton id={ project.id } />
                     </Flex>
                 </Box>
             }
@@ -66,7 +64,7 @@ export const generateMetadata = async ( { params }: Props ) => {
     }
 }
 
-export default IssueDetailsPage
+export default ProjectDetailsPage
 
 export const dynamic = 'force-dynamic'
 
