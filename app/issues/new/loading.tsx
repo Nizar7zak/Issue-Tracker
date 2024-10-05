@@ -1,2 +1,2 @@
-import IssueFormLoading from "../../components/Form/IssueFormLoading"
+import IssueFormLoading from "../../components/Form/FormLoading"
 export default IssueFormLoading
