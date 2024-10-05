@@ -46,7 +46,7 @@ export const PATCH = async (
 
     const { title, description } = body
 
-    const project = await prisma.issue.findUnique( {
+    const project = await prisma.project.findUnique( {
         where: {
             id: parseInt( id )
         }
@@ -54,7 +54,7 @@ export const PATCH = async (
     if ( !project )
         return NextResponse.json( { error: 'Invalid Project ' }, { status: 404 } )
 
-    const updateProject = await prisma.issue.update( {
+    const updateProject = await prisma.project.update( {
         where: {
             id: project.id
         },
