@@ -45,21 +45,21 @@ const ProjectDetailsPage = async ( { params: { id } }: Props ) => {
 }
 
 export const generateMetadata = async ( { params }: Props ) => {
-    const issue = await fetchUser( parseInt( params.id ) )
+    const project = await fetchUser( parseInt( params.id ) )
 
     return {
-        title: issue?.title,
-        description: 'Details of issue' + issue?.description,
-        keywords: issue?.title.split( ' ' ).concat( [ 'issue', 'bug tracking', 'project management' ] ).join( ', ' ),
+        title: project?.title,
+        description: 'Details of project' + project?.description,
+        keywords: project?.title.split( ' ' ).concat( [ 'project', 'bug tracking', 'project management' ] ).join( ', ' ),
         openGraph: {
-            title: issue?.title,
-            description: issue?.description,
+            title: project?.title,
+            description: project?.description,
             type: 'article',
         },
         twitter: {
             card: 'summary_large_image',
-            title: issue?.title,
-            description: issue?.description,
+            title: project?.title,
+            description: project?.description,
         },
     }
 }
