@@ -90,7 +90,7 @@ export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
     title: "Issue Tracker - Issue List",
-    description: "View all of project issuse",
+    description: "View all of project issues",
     keywords: "issue tracker, project management, task management, bug tracking",
     openGraph: {
         title: "Issue Tracker - Issue List",

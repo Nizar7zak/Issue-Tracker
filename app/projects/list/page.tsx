@@ -1,6 +1,7 @@
 import NewButton from "@/app/components/NewButton"
 import { prisma } from "@/prisma/client"
 import { Card, Flex, Grid, Heading, Text } from "@radix-ui/themes"
+import { Metadata } from "next"
 import Link from "next/link"
 
 const ProjectsPage = async () => {
@@ -8,7 +9,7 @@ const ProjectsPage = async () => {
     where: {}
   } )
   return (
-    <>
+    <div>
       <Flex justify='between'>
         <Heading mb='5'>Projects:</Heading>
         <NewButton title='Project' path="projects" />
@@ -27,9 +28,20 @@ const ProjectsPage = async () => {
           </Flex>
         </Card> ) }
       </Grid>
-    </>
+    </div>
   )
 }
 export const dynamic = 'force-dynamic'
+
+export const metadata: Metadata = {
+  title: "Issue Tracker - Project List",
+  description: "View all of projects",
+  keywords: "issue tracker, project management, task management, bug tracking",
+  openGraph: {
+    title: "Issue Tracker - Projects List",
+    description: "View all of projects",
+    type: "website",
+  }
+}
 
 export default ProjectsPage
