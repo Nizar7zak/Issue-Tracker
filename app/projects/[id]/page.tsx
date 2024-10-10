@@ -26,6 +26,8 @@ const ProjectDetailsPage = async ( { params: { id } }: Props ) => {
     if ( !project )
         notFound()
 
+    // console.log( project )
+
     return (
         <Grid columns={ { initial: "1", sm: "5" } } gap='5'>
             <Box className="md:col-span-4">
