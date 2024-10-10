@@ -19,9 +19,7 @@ const EditProjectPage = async ( { params: { id } }: { params: { id: string } } )
     if ( !project ) notFound()
 
     return (
-        <>
-            <ProjectForm project={ project } />
-        </>
+        <ProjectForm project={ project } />
     )
 }
 
