@@ -3,7 +3,6 @@ import z from 'zod'
 export const issueSchema = z.object( {
     title: z.string().min( 1 ).max( 255 ),
     description: z.string().min( 1 ).max( 65535 ),
-    projectId: z.number().int(),
     status: z.enum( [ 'OPEN', 'CLOSED', 'IN_PROGRESS' ] ).optional(),
 } )
 
@@ -18,13 +17,3 @@ export const commentSchema = z.object( {
     content: z.string().min( 1 ).max( 255 ),
 } )
 
-export const projectSchema = z.object( {
-    title: z.string().min( 1 ).max( 255 ),
-    description: z.string().min( 1 ).max( 65535 ).optional(),
-} )
-
-export const patchProjectSchema = z.object( {
-    title: z.string().min( 1 ).max( 255 ).optional(),
-    description: z.string().min( 1 ).max( 65535 ).optional(),
-
-} )

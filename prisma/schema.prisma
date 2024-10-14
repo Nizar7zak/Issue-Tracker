@@ -35,26 +35,14 @@ model Issue {
   assignedToUserId String?   @db.VarChar(255)
   assignedToUser   User?     @relation(fields: [assignedToUserId], references: [id])
   comments         Comment[]
-  project          Project?  @relation(fields: [projectId], references: [id])
-  projectId        Int?
-
+ 
   @@index([assignedToUserId])
-  @@index([projectId])
 }
 
 enum STATUS {
   OPEN
   CLOSED
   IN_PROGRESS
-}
-
-model Project {
-  id          Int             @id @default(autoincrement())
-  title       String          @db.VarChar(255)
-  description String?         @db.Text
-  createdAt   DateTime        @default(now())
-  issues      Issue[]
-  members     ProjectMember[]
 }
 
 model User {
@@ -71,18 +59,6 @@ model User {
   updatedAt     DateTime        @updatedAt
   Issue         Issue[]
   comment       Comment[]
-  projectMember ProjectMember[]
-}
-
-model ProjectMember {
-  project   Project @relation(fields: [projectId], references: [id])
-  projectId Int
-  user      User    @relation(fields: [userId], references: [id])
-  userId    String
-  admin     Boolean @default(false)
-
-  @@id([projectId, userId])
-  @@index([userId])
 }
 
 model Account {

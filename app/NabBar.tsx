@@ -30,7 +30,6 @@ const NavLinks = () => {
     const pathName = usePathname()
     const links = [
         { label: "Dashboard", href: "/" },
-        { label: "Projects", href: "/projects/list" },
         { label: "Issues", href: "/issues/list" },
     ]
 

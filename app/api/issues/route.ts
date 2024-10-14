@@ -18,7 +18,6 @@ export const POST = async ( reqeust: NextRequest ) => {
         data: {
             title: body.title,
             description: body.description,
-            projectId: body.projectId
         }
     } )
     return NextResponse.json( newIssue, { status: 201 } )
