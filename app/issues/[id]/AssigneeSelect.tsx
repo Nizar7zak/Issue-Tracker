@@ -65,4 +65,6 @@ const useUsers = () => useQuery( {
     retry: 3,
 } )
 
+export const dynamic = 'force-dynamic'
+
 export default AssigneeSelect
