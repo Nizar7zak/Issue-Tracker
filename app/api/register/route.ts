@@ -2,15 +2,13 @@ import { prisma } from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from 'zod'
 import bcrypt from 'bcrypt'
+import { authSchema } from "@/app/validationSchemas";
 
-const schema = z.object( {
-    email: z.string().email(),
-    password: z.string().min( 8 )
-} )
+
 export const POST = async ( request: NextRequest ) => {
     const body = await request.json()
 
-    const validation = schema.safeParse( body )
+    const validation = authSchema.safeParse( body )
     if ( !validation.success )
         return NextResponse.json( validation.error.format(), { status: 400 } )
 
