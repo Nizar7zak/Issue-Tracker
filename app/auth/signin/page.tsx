@@ -67,6 +67,7 @@ const SignIn = () => {
                     placeholder="Password"
                     register={ register( "password" ) }
                     error={ errors.password }
+                    type="password"
                 />
                 <Button
                     type="submit"

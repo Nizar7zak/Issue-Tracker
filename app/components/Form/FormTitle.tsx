@@ -6,13 +6,15 @@ type TitleInputProps = {
     defaultValue?: string;
     register: UseFormRegisterReturn;
     error?: FieldError;
-    placeholder: string
+    placeholder: string;
+    type?: "password" | "text"
 };
 
-const FormTitle = ( { defaultValue, register, error, placeholder }: TitleInputProps ) => {
+const FormTitle = ( {
+    defaultValue, register, error, placeholder, type = 'text' }: TitleInputProps ) => {
     return (
         <>
-            <TextField.Root defaultValue={ defaultValue } { ...register } placeholder={ placeholder } />
+            <TextField.Root defaultValue={ defaultValue } { ...register } placeholder={ placeholder } type={ type } />
             { error && <ErrorMessage>{ error.message }</ErrorMessage> }
         </>
     )

@@ -6,6 +6,8 @@ import { useSession } from 'next-auth/react';
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaBug } from "react-icons/fa";
+import UserImage from '../public/userPlaceholder.png'
+import { StaticImageData } from 'next/image';
 
 const NabBar = () => {
 
@@ -54,6 +56,7 @@ const NavLinks = () => {
 
 const AuthStatus = () => {
     const { status, data: session } = useSession()
+    console.log( status )
     return <Box>
         { status === "loading" && <Skeleton width='3rem' /> }
         {
@@ -61,11 +64,11 @@ const AuthStatus = () => {
             <DropdownMenu.Root>
                 <DropdownMenu.Trigger>
                     <Avatar
-                        src={ session.user!.image! }
-                        fallback="?"
+                        src={ typeof session?.user?.image === 'string' ? session.user.image : ( UserImage as StaticImageData ).src }
+                        fallback='?'
                         size="2"
                         radius="full"
-                        className="cursor-pointer"
+                        className="cursor-pointer block"
                     />
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Content>
