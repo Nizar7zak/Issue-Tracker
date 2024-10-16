@@ -56,7 +56,6 @@ const NavLinks = () => {
 
 const AuthStatus = () => {
     const { status, data: session } = useSession()
-    console.log( status )
     return <Box>
         { status === "loading" && <Skeleton width='3rem' /> }
         {
