@@ -14,7 +14,12 @@ const FormTitle = ( {
     defaultValue, register, error, placeholder, type = 'text' }: TitleInputProps ) => {
     return (
         <>
-            <TextField.Root defaultValue={ defaultValue } { ...register } placeholder={ placeholder } type={ type } />
+            <TextField.Root
+                defaultValue={ defaultValue }
+                { ...register }
+                placeholder={ placeholder }
+                type={ type }
+            />
             { error && <ErrorMessage>{ error.message }</ErrorMessage> }
         </>
     )
