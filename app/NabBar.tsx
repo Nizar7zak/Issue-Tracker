@@ -3,11 +3,11 @@ import { Skeleton } from '@/app/components';
 import { Avatar, Box, Container, DropdownMenu, Flex, Text } from "@radix-ui/themes";
 import classNames from "classnames";
 import { useSession } from 'next-auth/react';
+import { StaticImageData } from 'next/image';
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaBug } from "react-icons/fa";
-import UserImage from '../public/userPlaceholder.png'
-import { StaticImageData } from 'next/image';
+import UserImage from '../public/userPlaceholder.png';
 
 const NabBar = () => {
 
@@ -64,7 +64,11 @@ const AuthStatus = () => {
             <DropdownMenu.Root>
                 <DropdownMenu.Trigger>
                     <Avatar
-                        src={ typeof session?.user?.image === 'string' ? session.user.image : ( UserImage as StaticImageData ).src }
+                        src={
+                            typeof session?.user?.image === 'string' ?
+                                session.user.image :
+                                ( UserImage as StaticImageData ).src
+                        }
                         fallback='?'
                         size="2"
                         radius="full"
