@@ -92,7 +92,7 @@ const AuthStatus = () => {
 
         {
             status === "unauthenticated" &&
-            <Link className="nav-link" href='/api/auth/signin'>Login</Link>
+            <Link className="nav-link" href='/auth/signin'>Login</Link>
         }
     </Box >
 }

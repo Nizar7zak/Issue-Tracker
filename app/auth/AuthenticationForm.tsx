@@ -1,16 +1,17 @@
 "use client"
 import ErrorCallOut from "@/app/components/Form/ErrorCallOut";
 import FormTitle from "@/app/components/Form/FormTitle";
+import Link from "@/app/components/Link";
 import { authSchema } from "@/app/validationSchemas";
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, Flex, Heading, Separator, Spinner } from "@radix-ui/themes";
+import { Button, Flex, Heading, Separator, Spinner, Text } from "@radix-ui/themes";
+import axios from "axios";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from 'zod';
 import { FaGoogle } from "react-icons/fa";
-import axios from "axios";
+import { z } from 'zod';
 
 type AutbData = z.infer<typeof authSchema>
 
@@ -64,7 +65,7 @@ const AuthForm = ( { type }: Props ) => {
             className="mt-20"
             justify="center"
         >
-            <Flex className="w-2/5 rounded-2xl bg-indigo-100 p-12" direction='column' gap='3'>
+            <Flex className="md:w-2/5 rounded-2xl bg-indigo-100 p-12" direction="column" gap="3">
                 <Heading className="self-center text-indigo-800">
                     { label }
                 </Heading>
@@ -95,8 +96,8 @@ const AuthForm = ( { type }: Props ) => {
 
                 </form>
                 <Separator
-                    className="my-0.5 bg-indigo-700"
-                    style={ { height: '2px', width: '100%' } }
+                    className="my-0 bg-indigo-700"
+                    style={ { height: '1px', width: '100%' } }
                 />
                 <Button onClick={ () => {
                     signIn( 'google', {
@@ -107,6 +108,12 @@ const AuthForm = ( { type }: Props ) => {
                     <FaGoogle />
                     { label } with Google
                 </Button>
+                <Text>
+                    { type === "register" ? "Do you have an account? " : "New tracker? " }
+                    <Link href={ type === "register" ? "/auth/signin" : "/auth/signup" }>
+                        { type === "register" ? "Login" : "Create an account" }
+                    </Link>
+                </Text>
             </Flex>
         </Flex>
     );
