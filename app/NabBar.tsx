@@ -10,9 +10,10 @@ import { FaBug } from "react-icons/fa";
 import UserImage from '../public/userPlaceholder.png';
 
 const NabBar = () => {
-
+    const pathName = usePathname()
+    const status = pathName.includes("auth") ? "hidden" : "block"
     return (
-        <nav className="px-5 border-b py-3 mb-5">
+        <nav className={`px-5 border-b py-3 mb-5 ${status}`}>
             <Container>
                 <Flex justify="between">
                     <Flex gap="3" align="center">

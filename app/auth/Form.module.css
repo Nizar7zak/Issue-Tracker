@@ -1,0 +1,62 @@
+.formConatiner {
+    width: 360px;
+}
+
+@media (max-width: 1024px) {
+    .formConatiner {
+        width: 100%; 
+    }
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #a0a0a0; 
+    font-size: 0.9rem;
+    margin: 20px 0;
+    width: 65%;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #ddd; 
+    margin: 0 10px;
+}
+  
+.platformBtn {
+    border-radius: 4px;
+    background-color: #fff;
+    color: #4f4f4f;
+    border: 1px solid #e2e2e2;
+}
+
+.formBtn {
+    border-radius: 20px;
+}
+
+.btn {
+    width: 100% !important;
+    padding: 1.2rem 2rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.formBtn:hover {
+    opacity: 0.85;
+}
+
+.login-form {
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.form-input {
+    width: 100%;
+}
