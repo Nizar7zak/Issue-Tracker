@@ -24,7 +24,7 @@ interface Props {
 const AuthForm = ( { type }: Props ) => {
     const [ error, setError ] = useState( '' )
     const [ isOk, setIsOk ] = useState( false )
-    const [mouseOver, setMouseOver] = useState(false)
+    const [ mouseOver, setMouseOver ] = useState( false )
     const [ isSubmitting, setIsSubmitting ] = useState( false )
     const router = useRouter()
     const title = type === "register" ? "Create an account" : "Log in to your account"
@@ -42,10 +42,10 @@ const AuthForm = ( { type }: Props ) => {
         try {
             if ( type === "register" ) {
                 setIsSubmitting( true )
-                setError("")
+                setError( "" )
                 await axios.post( '/api/register', { email, password } )
-                setIsOk(true)
-                await new Promise((resolve) => setTimeout(resolve, 2000));
+                setIsOk( true )
+                await new Promise( ( resolve ) => setTimeout( resolve, 2000 ) );
 
                 router.push( '/auth/signin' )
                 router.refresh()
@@ -57,29 +57,29 @@ const AuthForm = ( { type }: Props ) => {
                     email,
                     password
                 } )
-                if(result?.error)
-                    throw new Error("Invalid Email or Password")
+                if ( result?.error )
+                    throw new Error( "Invalid Email or Password" )
                 router.push( '/' )
                 router.refresh()
             }
         } catch ( error ) {
-            setIsSubmitting(false);
-            const defaultMessage = type === "register" ? 
-                "User Already Exist" : 
+            setIsSubmitting( false );
+            const defaultMessage = type === "register" ?
+                "User Already Exist" :
                 "Invalid Email or Password";
-            setError(defaultMessage);
+            setError( defaultMessage );
         }
     } )
 
     return (
 
-        <Flex className={ styles.formConatiner } direction="column" width="100%" mt="9" align="center">
+        <Flex className={` ${styles.formConatiner} space-y-4`} direction="column" align="center">
             <Heading className="self-center text-zinc-700" mb="5">
                 { title }
             </Heading>
             <Button
-                onMouseOver={() => {setMouseOver(true)}}
-                onMouseOut={() => {setMouseOver(false)}}
+                onMouseOver={ () => { setMouseOver( true ) } }
+                onMouseOut={ () => { setMouseOver( false ) } }
                 className={ `${styles.btn} ${styles.platformBtn}` }
                 onClick={ () => {
                     signIn( 'google', {
@@ -87,7 +87,7 @@ const AuthForm = ( { type }: Props ) => {
                     } )
                 }
                 }>
-               {mouseOver ? <FcGoogle size={30}/> : <FaGoogle size={27} />}
+                { mouseOver ? <FcGoogle size={ 30 } /> : <FaGoogle size={ 27 } /> }
                 { label } with Google
             </Button>
 
@@ -96,7 +96,7 @@ const AuthForm = ( { type }: Props ) => {
             </div>
 
             <form
-                className="space-y-5 flex flex-col w-full"
+                className="space-y-6 flex flex-col w-full"
                 onSubmit={ onSubmit }
             >
 
@@ -122,7 +122,7 @@ const AuthForm = ( { type }: Props ) => {
                 { error && <ErrorCallOut error={ error } /> }
 
             </form>
-            <ConfirmCallOut sucsses={isOk} />
+            <ConfirmCallOut sucsses={ isOk } />
 
             <Flex gap='1' mt={ "5" }>
                 <Text>
