@@ -2,7 +2,7 @@
 import ErrorCallOut from "@/app/components/Form/ErrorCallOut";
 import FormTitle from "@/app/components/Form/FormTitle";
 import Link from "next/link";
-import { authSchema } from "@/app/validationSchemas";
+import { signInSchema, signUpSchema } from "@/app/validationSchemas";
 import { AuthService } from "@/app/services/authService";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, Flex, Spinner, Text } from "@radix-ui/themes";
@@ -15,7 +15,8 @@ import { z } from 'zod';
 import ConfirmCallOut from "../components/Form/ConfirmCallOut";
 import { useQueryClient } from '@tanstack/react-query';
 
-type AutbData = z.infer<typeof authSchema>
+type SignInData = z.infer<typeof signInSchema>
+type SignUpData = z.infer<typeof signUpSchema>
 
 interface Props {
     type: "signin" | "register",
@@ -30,12 +31,14 @@ const AuthForm = ({ type }: Props) => {
     const title = type === "register" ? "Create an account" : "Log in to your account"
     const label = type === "register" ? "Sign up" : "Sign in"
 
+    const schema = type === "register" ? signUpSchema : signInSchema
+
     const {
         register,
         handleSubmit,
         formState: { errors }
-    } = useForm<AutbData>({
-        resolver: zodResolver(authSchema)
+    } = useForm<SignInData | SignUpData>({
+        resolver: zodResolver(schema)
     })
 
     const onSubmit = handleSubmit(async (data) => {
@@ -44,10 +47,11 @@ const AuthForm = ({ type }: Props) => {
             setError("")
             
             if (type === "register") {
+                const signUpData = data as SignUpData
                 const result = await AuthService.registerUser({ 
-                    name: data.name,
-                    email: data.email, 
-                    password: data.password 
+                    name: signUpData.name,
+                    email: signUpData.email, 
+                    password: signUpData.password 
                 })
                 if (result.success) {
                     queryClient.invalidateQueries({ queryKey: ['users'] })
@@ -59,7 +63,8 @@ const AuthForm = ({ type }: Props) => {
                     setError(result.error || "Registration failed")
                 }
             } else {
-                const result = await AuthService.signInUser({ email: data.email, password: data.password })
+                const signInData = data as SignInData
+                const result = await AuthService.signInUser({ email: signInData.email, password: signInData.password })
                 if (result.success) {
                     router.push('/')
                     router.refresh()
@@ -89,8 +94,8 @@ const AuthForm = ({ type }: Props) => {
                             <Box>
                                 <FormTitle
                                     placeholder="Enter your full name"
-                                    register={register("name")}
-                                    error={errors.name}
+                                    register={register("name" as keyof SignUpData)}
+                                    error={(errors as any).name}
                                 />
                             </Box>
                         )}
