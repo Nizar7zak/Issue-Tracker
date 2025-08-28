@@ -2,6 +2,7 @@
 import { Flex, Switch } from "@radix-ui/themes";
 import { handleQueryChange } from "../handlers";
 import { useRouter, useSearchParams } from "next/navigation";
+import { DEFAULT_PAGE_SIZE, ASSIGNED_VALUE } from "@/app/constants";
 
 const FilterByAssignee = () => {
     const searchParams = useSearchParams()
@@ -9,8 +10,8 @@ const FilterByAssignee = () => {
 
     const handleUserByFilter = ( value: boolean ) => {
         const status = searchParams.get( 'status' ) || ""
-        const pageSize = searchParams.get( 'pageSize' ) || "10"
-        const assignee = value ? "true" : ""
+        const pageSize = searchParams.get( 'pageSize' ) || DEFAULT_PAGE_SIZE
+        const assignee = value ? ASSIGNED_VALUE : ""
 
         const query = handleQueryChange( searchParams, status, pageSize, assignee )
         router.push( query )

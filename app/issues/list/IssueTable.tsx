@@ -23,89 +23,93 @@ const IssueTable = ( { issues, searchParams }: Props ) => {
    
 
     return (
-        <Table.Root variant="surface">
-            <Table.Header>
-                <Table.Row>
-                    { columns.map( ( col ) => <Table.ColumnHeaderCell
-                        key={ col.value }
-                        className={ col.className }
-                    >
-                        <Text className={
-                            classNames( {
+        <div className="animate-fade-in-up">
+            <Table.Root variant="surface">
+                <Table.Header>
+                    <Table.Row>
+                        { columns.map( ( col ) => <Table.ColumnHeaderCell
+                            key={ col.value }
+                            className={ col.className }
+                        >
+                            <Text className={
+                                classNames( {
+                                    "nav-link": true,
+                                    "!text-zinc-900 dark:!text-zinc-100": col.value === searchParams.orderBy?.split( "_" )[ 0 ],
+                                } )
+                            }
+                            > { col.value }</Text>
+
+                            <NextLink
+                                href={ { query: { ...searchParams, orderBy: col.value + "_asc" } } }>
+                                <ArrowUpIcon
+                                    className="inline"
+                                    color={ `${col.value === searchParams.orderBy?.split( '_' )[ 0 ] &&
+                                        searchParams.orderBy?.split( '_' )[ 1 ] === 'asc' ?
+                                        "black" :
+                                        "gray"}`
+                                    } />
+                            </NextLink>
+                            <NextLink
+                                href={ { query: { ...searchParams, orderBy: col.value + "_desc" } } }>
+                                <ArrowDownIcon
+                                    className="inline"
+                                    color={ `${col.value === searchParams.orderBy?.split( '_' )[ 0 ] &&
+                                        searchParams.orderBy?.split( '_' )[ 1 ] === 'desc' ?
+                                        "black" :
+                                        "gray"}`
+                                    } />
+                            </NextLink>
+
+                        </Table.ColumnHeaderCell> ) }
+
+                        <Table.ColumnHeaderCell className='hidden md:table-cell'>
+                            <Text className={ classNames( {
                                 "nav-link": true,
-                                "!text-zinc-900": col.value === searchParams.orderBy?.split( "_" )[ 0 ],
-                            } )
-                        }
-                        > { col.value }</Text>
-
-                        <NextLink
-                            href={ { query: { ...searchParams, orderBy: col.value + "_asc" } } }>
-                            <ArrowUpIcon
-                                className="inline"
-                                color={ `${col.value === searchParams.orderBy?.split( '_' )[ 0 ] &&
-                                    searchParams.orderBy?.split( '_' )[ 1 ] === 'asc' ?
-                                    "black" :
-                                    "gray"}`
-                                } />
-                        </NextLink>
-                        <NextLink
-                            href={ { query: { ...searchParams, orderBy: col.value + "_desc" } } }>
-                            <ArrowDownIcon
-                                className="inline"
-                                color={ `${col.value === searchParams.orderBy?.split( '_' )[ 0 ] &&
-                                    searchParams.orderBy?.split( '_' )[ 1 ] === 'desc' ?
-                                    "black" :
-                                    "gray"}`
-                                } />
-                        </NextLink>
-
-                    </Table.ColumnHeaderCell> ) }
-
-                    <Table.ColumnHeaderCell className='hidden md:table-cell'>
-                        <Text className={ classNames( {
-                            "nav-link": true,
-                            "!text-zinc-900": "true" === searchParams.assignee
-                        } ) }> Assigned to User</Text>
-                    </Table.ColumnHeaderCell>
-                </Table.Row>
-            </Table.Header>
-            <Table.Body>
-                { issues.map( ( issue ) => (
-                    <Table.Row key={ issue.id }>
-
-                        <Table.Cell>
-                            <Link href={ `/issues/${issue.id}` }>
-                                { issue.title }
-                            </Link>
-                            <div className="block md:hidden mt-1">
-                                <IssueStatusBadge status={ issue.status } />
-                            </div>
-                        </Table.Cell>
-
-                        <Table.Cell className="hidden md:table-cell">
-                            <IssueStatusBadge status={ issue.status } />
-                        </Table.Cell>
-
-                        <Table.Cell className="hidden md:table-cell">
-                            { issue.createdAt.toDateString() }
-                        </Table.Cell>
-                        <Table.Cell className="hidden md:table-cell">
-                            { issue.assignedToUser &&
-                                <Flex gap='2' align='center'>
-                                    <Avatar
-                                        src={ issue.assignedToUser.image }
-                                        fallback="?"
-                                        size='1'
-                                        radius='full'
-                                    />
-                                    <Text >{ issue.assignedToUser.name }</Text>
-                                </Flex> }
-                        </Table.Cell>
-
+                                "!text-zinc-900 dark:!text-zinc-100": "true" === searchParams.assignee
+                            } ) }> Assigned to User</Text>
+                        </Table.ColumnHeaderCell>
                     </Table.Row>
-                ) ) }
-            </Table.Body>
-        </Table.Root >
+                </Table.Header>
+                <Table.Body>
+                    { issues.map( ( issue, index ) => (
+                        <Table.Row 
+                            key={ issue.id }
+                            className="animate-fade-in-left transition-all duration-200 hover:bg-accent-3"
+                            style={{ animationDelay: `${index * 50}ms` }}
+                        >
+                            <Table.Cell>
+                                <Link href={ `/issues/${issue.id}` }>
+                                    { issue.title }
+                                </Link>
+                                <div className="block md:hidden mt-1">
+                                    <IssueStatusBadge status={ issue.status } />
+                                </div>
+                            </Table.Cell>
+
+                            <Table.Cell className="hidden md:table-cell">
+                                <IssueStatusBadge status={ issue.status } />
+                            </Table.Cell>
+
+                            <Table.Cell className="hidden md:table-cell">
+                                { issue.createdAt.toDateString() }
+                            </Table.Cell>
+                            <Table.Cell className="hidden md:table-cell">
+                                { issue.assignedToUser &&
+                                    <Flex gap='2' align='center'>
+                                        <Avatar
+                                            src={ issue.assignedToUser.image }
+                                            fallback="?"
+                                            size='1'
+                                            radius='full'
+                                        />
+                                        <Text >{ issue.assignedToUser.name }</Text>
+                                    </Flex> }
+                            </Table.Cell>
+                        </Table.Row>
+                    ) ) }
+                </Table.Body>
+            </Table.Root >
+        </div>
     )
 }
 

@@ -96,7 +96,6 @@ export const DELETE = async (
     const user = await prisma.user.findUnique( {
         where: { email: session.user!.email! }
     } )
-    console.log( user )
     if ( !( comment.userId === user?.id ) )
         return NextResponse.json( { error: 'You are not the owner for this comment!' }, { status: 401 } )
 

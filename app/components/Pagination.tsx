@@ -27,45 +27,59 @@ const Pagination = ( { itemCount, pageSize, currentPage }: Props ) => {
     const pageCount = Math.ceil( itemCount / pageSize );
     if ( pageCount <= 1 ) return null;
     return (
-        <Flex align="center" gap='2' >
-            <Button
-                color="gray"
-                variant="soft"
-                disabled={ currentPage === 1 }
-                onClick={ () => changePage( 1 ) }
-            >
-                <DoubleArrowLeftIcon />
-            </Button>
-            <Button
-                color="gray"
-                variant="soft"
-                disabled={ currentPage === 1 }
-                onClick={ () => changePage( currentPage - 1 ) }
-            >
-                <ChevronLeftIcon />
-            </Button>
-            <Text size='2'>
-                Page { currentPage } of { pageCount }
-            </Text>
-            <Button
-                color="gray"
-                variant="soft"
-                disabled={ currentPage === pageCount }
-                onClick={ () => changePage( currentPage + 1 ) }
-            >
-                <ChevronRightIcon />
-            </Button>
-            <Button
-                color="gray"
-                variant="soft"
-                disabled={ currentPage === pageCount }
-                onClick={ () => changePage( pageCount ) }
-            >
-                <DoubleArrowRightIcon />
-            </Button>
-
-
-        </Flex>
+        <div className="animate-fade-in-up">
+            <Flex align="center" gap='2' >
+                <div className="hover-scale transition-transform duration-200">
+                    <Button
+                        color="gray"
+                        variant="soft"
+                        disabled={ currentPage === 1 }
+                        onClick={ () => changePage( 1 ) }
+                    >
+                        <DoubleArrowLeftIcon />
+                    </Button>
+                </div>
+                
+                <div className="hover-scale transition-transform duration-200">
+                    <Button
+                        color="gray"
+                        variant="soft"
+                        disabled={ currentPage === 1 }
+                        onClick={ () => changePage( currentPage - 1 ) }
+                    >
+                        <ChevronLeftIcon />
+                    </Button>
+                </div>
+                
+                <div className="animate-fade-in-up">
+                    <Text size='2'>
+                        Page { currentPage } of { pageCount }
+                    </Text>
+                </div>
+                
+                <div className="hover-scale transition-transform duration-200">
+                    <Button
+                        color="gray"
+                        variant="soft"
+                        disabled={ currentPage === pageCount }
+                        onClick={ () => changePage( currentPage + 1 ) }
+                    >
+                        <ChevronRightIcon />
+                    </Button>
+                </div>
+                
+                <div className="hover-scale transition-transform duration-200">
+                    <Button
+                        color="gray"
+                        variant="soft"
+                        disabled={ currentPage === pageCount }
+                        onClick={ () => changePage( pageCount ) }
+                    >
+                        <DoubleArrowRightIcon />
+                    </Button>
+                </div>
+            </Flex>
+        </div>
     )
 }
 

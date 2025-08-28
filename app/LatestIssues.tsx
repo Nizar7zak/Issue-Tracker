@@ -18,7 +18,7 @@ const LatestIssues = async () => {
             <Table.Root>
                 <Table.Body>
                     {
-                        issues.map( ( issue ) =>
+                        issues.map( ( issue ) => (
                             <Table.Row key={ issue.id }>
                                 <Table.Cell>
                                     <Flex justify='between'>
@@ -39,15 +39,11 @@ const LatestIssues = async () => {
                                         }
                                     </Flex>
                                 </Table.Cell>
-
                             </Table.Row>
-                        )
+                        ))
                     }
-
                 </Table.Body>
-
             </Table.Root>
-
         </Card>
     )
 }
