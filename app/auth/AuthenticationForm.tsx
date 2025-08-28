@@ -13,6 +13,7 @@ import { FaGoogle } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { z } from 'zod';
 import ConfirmCallOut from "../components/Form/ConfirmCallOut";
+import { useQueryClient } from '@tanstack/react-query';
 
 type AutbData = z.infer<typeof authSchema>
 
@@ -25,6 +26,7 @@ const AuthForm = ({ type }: Props) => {
     const [mouseOver, setMouseOver] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const router = useRouter()
+    const queryClient = useQueryClient()
     const title = type === "register" ? "Create an account" : "Log in to your account"
     const label = type === "register" ? "Sign up" : "Sign in"
 
@@ -44,6 +46,7 @@ const AuthForm = ({ type }: Props) => {
             if (type === "register") {
                 const result = await AuthService.registerUser({ email, password })
                 if (result.success) {
+                    queryClient.invalidateQueries({ queryKey: ['users'] })
                     setIsOk(true)
                     await new Promise((resolve) => setTimeout(resolve, 2000));
                     router.push('/auth/signin')

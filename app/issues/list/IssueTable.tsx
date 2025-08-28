@@ -24,9 +24,9 @@ const IssueTable = ( { issues, searchParams }: Props ) => {
 
     return (
         <div className="animate-fade-in-up">
-            <Table.Root variant="surface">
+            <Table.Root variant="surface" className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm border border-slate-200/60 dark:border-slate-700/60 shadow-lg dark:shadow-slate-900/20">
                 <Table.Header>
-                    <Table.Row>
+                    <Table.Row className="border-b border-slate-200/60 dark:border-slate-700/60">
                         { columns.map( ( col ) => <Table.ColumnHeaderCell
                             key={ col.value }
                             className={ col.className }
@@ -42,22 +42,30 @@ const IssueTable = ( { issues, searchParams }: Props ) => {
                             <NextLink
                                 href={ { query: { ...searchParams, orderBy: col.value + "_asc" } } }>
                                 <ArrowUpIcon
-                                    className="inline"
-                                    color={ `${col.value === searchParams.orderBy?.split( '_' )[ 0 ] &&
-                                        searchParams.orderBy?.split( '_' )[ 1 ] === 'asc' ?
-                                        "black" :
-                                        "gray"}`
-                                    } />
+                                    className={classNames(
+                                        "inline transition-colors duration-200",
+                                        {
+                                            "text-slate-900 dark:text-slate-100": col.value === searchParams.orderBy?.split( '_' )[ 0 ] &&
+                                                searchParams.orderBy?.split( '_' )[ 1 ] === 'asc',
+                                            "text-slate-400 dark:text-slate-500": !(col.value === searchParams.orderBy?.split( '_' )[ 0 ] &&
+                                                searchParams.orderBy?.split( '_' )[ 1 ] === 'asc')
+                                        }
+                                    )}
+                                />
                             </NextLink>
                             <NextLink
                                 href={ { query: { ...searchParams, orderBy: col.value + "_desc" } } }>
                                 <ArrowDownIcon
-                                    className="inline"
-                                    color={ `${col.value === searchParams.orderBy?.split( '_' )[ 0 ] &&
-                                        searchParams.orderBy?.split( '_' )[ 1 ] === 'desc' ?
-                                        "black" :
-                                        "gray"}`
-                                    } />
+                                    className={classNames(
+                                        "inline transition-colors duration-200",
+                                        {
+                                            "text-slate-900 dark:text-slate-100": col.value === searchParams.orderBy?.split( '_' )[ 0 ] &&
+                                                searchParams.orderBy?.split( '_' )[ 1 ] === 'desc',
+                                            "text-slate-400 dark:text-slate-500": !(col.value === searchParams.orderBy?.split( '_' )[ 0 ] &&
+                                                searchParams.orderBy?.split( '_' )[ 1 ] === 'desc')
+                                        }
+                                    )}
+                                />
                             </NextLink>
 
                         </Table.ColumnHeaderCell> ) }
@@ -74,7 +82,7 @@ const IssueTable = ( { issues, searchParams }: Props ) => {
                     { issues.map( ( issue, index ) => (
                         <Table.Row 
                             key={ issue.id }
-                            className="animate-fade-in-left transition-all duration-200 hover:bg-accent-3"
+                            className="animate-fade-in-left transition-all duration-200 hover:bg-slate-50/80 dark:hover:bg-slate-800/40 border-b border-slate-100/60 dark:border-slate-800/60"
                             style={{ animationDelay: `${index * 50}ms` }}
                         >
                             <Table.Cell>
@@ -91,18 +99,21 @@ const IssueTable = ( { issues, searchParams }: Props ) => {
                             </Table.Cell>
 
                             <Table.Cell className="hidden md:table-cell">
-                                { issue.createdAt.toDateString() }
+                                <Text className="text-slate-700 dark:text-slate-300">
+                                    { issue.createdAt.toDateString() }
+                                </Text>
                             </Table.Cell>
                             <Table.Cell className="hidden md:table-cell">
                                 { issue.assignedToUser &&
                                     <Flex gap='2' align='center'>
                                         <Avatar
                                             src={ issue.assignedToUser.image }
-                                            fallback="?"
+                                            fallback={issue.assignedToUser.name?.[0] || "U"}
                                             size='1'
                                             radius='full'
+                                            className="ring-2 ring-slate-200 dark:ring-slate-700"
                                         />
-                                        <Text >{ issue.assignedToUser.name }</Text>
+                                        <Text className="text-slate-700 dark:text-slate-300">{ issue.assignedToUser.name }</Text>
                                     </Flex> }
                             </Table.Cell>
                         </Table.Row>

@@ -1,8 +1,6 @@
 "use client"
 import { Flex } from "@radix-ui/themes";
 import AuthForm from "../AuthenticationForm";
-import Image from "next/image";
-import ImageForm from "@/public/background.jpg"; 
 import { Heading, Text } from "@radix-ui/themes";
 import { ArrowLeftIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
@@ -46,41 +44,56 @@ const Signup = () => {
         <div className="hidden lg:flex w-6/12 justify-center items-center animate-fade-in-right">
           <div className="relative w-full max-w-xl">
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-600/20 rounded-3xl blur-3xl"></div>
-            <div className="relative">
-              <Image 
-                src={ImageForm} 
-                alt="Issue Tracker" 
-                className="rounded-3xl shadow-2xl w-full"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-3xl"></div>
-            </div>
-            
-
-            <div className="absolute -top-6 -left-6 bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm rounded-2xl p-4 shadow-xl animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/20 rounded-full flex items-center justify-center">
-                  <svg className="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="relative bg-gradient-to-br from-purple-500/10 via-pink-600/10 to-indigo-700/10 dark:from-purple-400/20 dark:via-pink-500/20 dark:to-indigo-600/20 rounded-3xl p-12 shadow-2xl border border-white/20 dark:border-slate-700/30">
+              <div className="text-center">
+                <div className="w-24 h-24 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl">
+                  <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
                 </div>
-                <div>
-                  <Text className="font-semibold text-slate-800 dark:text-slate-200 text-sm">Team Collaboration</Text>
-                  <Text className="text-slate-600 dark:text-slate-400 text-xs">Work together seamlessly</Text>
-                </div>
-              </div>
-            </div>
-            
-            <div className="absolute -bottom-6 -right-6 bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm rounded-2xl p-4 shadow-xl animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-pink-100 dark:bg-pink-900/20 rounded-full flex items-center justify-center">
-                  <svg className="w-5 h-5 text-pink-600 dark:text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                  </svg>
-                </div>
-                <div>
-                  <Text className="font-semibold text-slate-800 dark:text-slate-200 text-sm">Analytics & Insights</Text>
-                  <Text className="text-slate-600 dark:text-slate-400 text-xs">Track your progress</Text>
+                <Heading size="5" className="text-slate-800 dark:text-slate-200 mb-4">
+                  Welcome to Issue Tracker
+                </Heading>
+                <Text className="text-slate-600 dark:text-slate-400 text-lg mb-8">
+                  Join thousands of developers and teams managing their projects efficiently
+                </Text>
+                
+                <div className="grid grid-cols-1 gap-6">
+                  <div className="flex items-center gap-4 p-4 bg-white/60 dark:bg-slate-800/60 rounded-xl backdrop-blur-sm">
+                    <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center">
+                      <svg className="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <Text className="font-semibold text-slate-800 dark:text-slate-200">Team Collaboration</Text>
+                      <Text className="text-slate-600 dark:text-slate-400 text-sm">Work together seamlessly</Text>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-4 p-4 bg-white/60 dark:bg-slate-800/60 rounded-xl backdrop-blur-sm">
+                    <div className="w-12 h-12 bg-pink-100 dark:bg-pink-900/30 rounded-full flex items-center justify-center">
+                      <svg className="w-6 h-6 text-pink-600 dark:text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <Text className="font-semibold text-slate-800 dark:text-slate-200">Analytics & Insights</Text>
+                      <Text className="text-slate-600 dark:text-slate-400 text-sm">Track your progress with detailed analytics</Text>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-4 p-4 bg-white/60 dark:bg-slate-800/60 rounded-xl backdrop-blur-sm">
+                    <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center">
+                      <svg className="w-6 h-6 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <Text className="font-semibold text-slate-800 dark:text-slate-200">Lightning Fast</Text>
+                      <Text className="text-slate-600 dark:text-slate-400 text-sm">Real-time updates and notifications</Text>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

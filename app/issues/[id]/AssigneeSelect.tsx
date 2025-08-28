@@ -1,16 +1,16 @@
 "use client"
 import { Skeleton } from '@/app/components'
-import { Issue, User } from '@prisma/client'
+import { Issue } from '@prisma/client'
 import { Avatar, Select } from '@radix-ui/themes'
 import { IssueService } from '@/app/services/issueService'
-import { useQuery } from '@tanstack/react-query'
-import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { UNASSIGNED_VALUE } from '@/app/constants'
+import { useUsers } from '@/app/hooks/useUsers'
 
 const AssigneeSelect = ( { issue }: { issue: Issue } ) => {
-    const { data: users, error, isLoading } = useUsers();
+    const { data: users, error, isLoading, invalidateUsers } = useUsers();
     const router = useRouter()
+    
     if ( isLoading ) return <Skeleton height='2rem' />
     if ( error ) return null;
 
@@ -21,10 +21,12 @@ const AssigneeSelect = ( { issue }: { issue: Issue } ) => {
             const result = await IssueService.assignUserToIssue( issue.id, userId )
             if ( result.success ) {
                 router.refresh()
+                invalidateUsers()
             }
         } catch ( error ) {
         }
     }
+    
     return (
         <div className="animate-fade-in-up hover-scale-sm transition-transform duration-200">
             <Select.Root
@@ -79,13 +81,6 @@ const AssigneeSelect = ( { issue }: { issue: Issue } ) => {
         </div>
     )
 }
-
-const useUsers = () => useQuery( {
-    queryKey: [ 'users' ],
-    queryFn: () => axios.get<User[]>( '/api/users' ).then( res => res.data ),
-    staleTime: 0,
-    retry: 3,
-} )
 
 export const dynamic = 'force-dynamic'
 
