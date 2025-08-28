@@ -26,6 +26,15 @@ const AssigneeSelect = ( { issue }: { issue: Issue } ) => {
         } catch ( error ) {
         }
     }
+
+    const getUserDisplayName = (user: any) => {
+        if (user.name) return user.name;
+        if (user.email) {
+            const emailPrefix = user.email.split('@')[0];
+            return emailPrefix.charAt(0).toUpperCase() + emailPrefix.slice(1);
+        }
+        return 'Unknown User';
+    }
     
     return (
         <div className="animate-fade-in-up hover-scale-sm transition-transform duration-200">
@@ -44,7 +53,7 @@ const AssigneeSelect = ( { issue }: { issue: Issue } ) => {
                                         fallback={assignedUser.name?.[0] || assignedUser.email?.[0] || "U"}
                                         size="1"
                                     />
-                                    <span>{assignedUser.name}</span>
+                                    <span>{getUserDisplayName(assignedUser)}</span>
                                 </div>
                             ) : (
                                 <span>Unassigned</span>
@@ -72,7 +81,7 @@ const AssigneeSelect = ( { issue }: { issue: Issue } ) => {
                                     fallback={user.name?.[0] || user.email?.[0] || "U"}
                                     size="1"
                                 />
-                                <span>{ user.name }</span>
+                                <span>{ getUserDisplayName(user) }</span>
                             </div>
                         </Select.Item> ) }
                     </Select.Group>

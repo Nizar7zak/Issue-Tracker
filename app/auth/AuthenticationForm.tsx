@@ -38,13 +38,17 @@ const AuthForm = ({ type }: Props) => {
         resolver: zodResolver(authSchema)
     })
 
-    const onSubmit = handleSubmit(async ({ email, password }) => {
+    const onSubmit = handleSubmit(async (data) => {
         try {
             setIsSubmitting(true)
             setError("")
             
             if (type === "register") {
-                const result = await AuthService.registerUser({ email, password })
+                const result = await AuthService.registerUser({ 
+                    name: data.name,
+                    email: data.email, 
+                    password: data.password 
+                })
                 if (result.success) {
                     queryClient.invalidateQueries({ queryKey: ['users'] })
                     setIsOk(true)
@@ -55,7 +59,7 @@ const AuthForm = ({ type }: Props) => {
                     setError(result.error || "Registration failed")
                 }
             } else {
-                const result = await AuthService.signInUser({ email, password })
+                const result = await AuthService.signInUser({ email: data.email, password: data.password })
                 if (result.success) {
                     router.push('/')
                     router.refresh()
@@ -81,6 +85,16 @@ const AuthForm = ({ type }: Props) => {
                     style={{ width: '100%' }}
                 >
                     <Flex direction="column" gap="5" style={{ width: '100%' }}>
+                        {type === "register" && (
+                            <Box>
+                                <FormTitle
+                                    placeholder="Enter your full name"
+                                    register={register("name")}
+                                    error={errors.name}
+                                />
+                            </Box>
+                        )}
+
                         <Box>
                             <FormTitle
                                 placeholder="Enter your email"

@@ -3,6 +3,7 @@ import { signIn } from 'next-auth/react';
 import toast from 'react-hot-toast';
 
 export interface AuthData {
+  name?: string;
   email: string;
   password: string;
 }

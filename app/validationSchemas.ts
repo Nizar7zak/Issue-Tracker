@@ -19,6 +19,7 @@ export const commentSchema = z.object( {
 
 
 export const authSchema = z.object( {
+    name: z.string().min( 2, "Name must be at least 2 characters" ).max( 50, "Name must be less than 50 characters" ),
     email: z.string().email(),
     password: z.string().min( 8 )
 } )
